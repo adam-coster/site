@@ -13,7 +13,7 @@
 
 One of my favorite drinks, especially in the summer, is a coffee tonic. At base it's just coffee plus tonic water, so they're very easy to make while giving you plenty of room to explore.
 
-![A cold glass of light-brown coffee tonic, with ice.](/images/coffee/coffee-tonic.jpg)
+![A cold glass of light-brown coffee tonic, with ice.](/coffee-tonic.jpg)
 
 ## Simple Coffee Tonic Recipe
 
@@ -24,7 +24,7 @@ Here's the base recipe I use:
 - 1/2oz (15ml) [simple syrup](/blog/simple-syrup)
 - ice
 
-![Coffee tonic ingredients: a 1-pint mason jar containing simple syrup, a 1-quart mason jar of cold brew coffee, a small bottle of Fever-Tree Tonic, and a glass of prepared coffee tonic with ice.](/images/coffee/coffee-tonic-ingredients.jpg)
+![Coffee tonic ingredients: a 1-pint mason jar containing simple syrup, a 1-quart mason jar of cold brew coffee, a small bottle of Fever-Tree Tonic, and a glass of prepared coffee tonic with ice.](/coffee-tonic.ingredients.jpg)
 
 You can adjust those ratios to taste. You'll likely need different ratios depending on your coffee, brand of tonic water, and the sweetness of your simple syrup.
 
@@ -32,4 +32,4 @@ I typically use a mild [cold brewed coffee](/blog/coffee-cold-brew), though I've
 
 It's hard to beat Fever Tree tonic. While other tonics also give decent results, my coffee tonics are way better when I splurge on the good stuff.
 
-Tonic water has a lot of sugar in it already, so I mostly add simple syrup because I *really* like sweets, and so that I can add other flavors. I try to keep [cardamom simple syrup](/blog/simple-syrup) on hand for my coffee tonics.
+Tonic water has a lot of sugar in it already, so I mostly add simple syrup because I _really_ like sweets, and so that I can add other flavors. I try to keep [cardamom simple syrup](/blog/simple-syrup) on hand for my coffee tonics.

@@ -19,13 +19,13 @@ Cold brew coffee is great, especially for things like [coffee tonics](/blog/coff
 - Brew duration
 - Filtration method
 
-There's no *correct* combination of those factors, but you'll definitely get different results when you vary any of them! Personally, I optimize for *simplicity* of the process. In general, you can get great results no matter what you do if you start with really good coffee.
+There's no _correct_ combination of those factors, but you'll definitely get different results when you vary any of them! Personally, I optimize for _simplicity_ of the process. In general, you can get great results no matter what you do if you start with really good coffee.
 
 Here's how I make my cold brew:
 
 ## Equipment
 
-![Two mason jars with metal tea-infusers inside.](/images/coffee/coffee-infusion.jpg)
+![Two mason jars with metal tea-infusers inside.](/coffee-cold-brew.infusion.jpg)
 
 - A food-safe, coverable container (like a mason jar)
 - A tea infuser big enough to hold your grounds (with holes small enough to trap the grit). Fine-mesh tea infusers will give you less grit, but really any infuser will do. A little grit builds character

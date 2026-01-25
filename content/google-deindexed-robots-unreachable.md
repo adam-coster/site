@@ -16,7 +16,7 @@ Every few months I remember that I have a blog, and then pop open the Google Sea
 
 When I did this in December I was _quite_ startled to see that I was getting _literally zero_ traffic from Google Search.
 
-![Google Search Impressions chart for adamcoster.com spanning August 1, 2025 to December 2, 2025. Impressions are on an increasing trend for most of August, peaking at ~5000 daily impressions, but then impressions suddenly plummet to August 27, hitting 0 by mid-September.](/images/google-deindexed-robots-unreachable/google-search-without-robots-txt.jpg)
+![Google Search Impressions chart for adamcoster.com spanning August 1, 2025 to December 2, 2025. Impressions are on an increasing trend for most of August, peaking at ~5000 daily impressions, but then impressions suddenly plummet to August 27, hitting 0 by mid-September.](/igoogle-deindexed-robots-unreachable.google-search-without-robots-txt.jpg)
 
 Fortunately, [Google's Search Console](https://search.google.com/search-console/about) told me exactly what was going on: in its latest pass on my site, it put the whole thing into an error category of _not being indexable_ because it could not find a `/robots.txt` file ("robots.txt unreachable").
 
@@ -38,7 +38,7 @@ On the other hand, if a site is _already indexed_, and Google can reach its site
 
 If this has happened to you, take heart that it looks like recovery is possible:
 
-![Google Search Impressions chart for adamcoster.com spanning the last 6 months showing a wide hole in the middle with zero impressions, but ending with the final week looking similar to how things did before the site was di-indexed.](/images/google-deindexed-robots-unreachable/google-search-with-robots-txt.jpg)
+![Google Search Impressions chart for adamcoster.com spanning the last 6 months showing a wide hole in the middle with zero impressions, but ending with the final week looking similar to how things did before the site was di-indexed.](/google-deindexed-robots-unreachable.google-search-with-robots-txt.jpg)
 
 Fixing it will depend on what exactly is happening. I'm still assuming that you don't actually need a `robots.txt`, as long as that URL returns a `404` status or something else GoogleBot likes. But why risk it? Add a `robots.txt` file if you don't have one! And otherwise, uh, just make sure that your server is super reliable about delivering it?
 
