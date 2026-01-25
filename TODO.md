@@ -6,6 +6,27 @@
 
 ## Content Normalization
 
+### Blog Posts
+
+All posts are in `./site/src/routes/blog/(posts)/`, with each post being a `+page.md` and paired `meta.json` file. Some of these posts refer to images, which are in `./projects/site/static/images/` and sorta named after the post that references them but not completely.
+
+1. Rename each post's `+page.md` to `./content/{slug}.md` and add to a `redirects.txt` file as `/blog/{slug} /{slug}`
+2. Convert each post's `meta.json` to jsonc frontmatter, extracting any recipes to Article JSON-LD and store it as `./content/{slug}.recipe.jsonld`. (Don't worry about the old FAQPage logic -- only one post used it and WHO CARES)
+3. For all locally stored blog-post images, rename to the best-fit `./{slug}.{name}.{ext}` and update links (there aren't many so just do it manually).
+
+### Old /blog
+
+The new site will have the landing page be a SEARCH page. The old site had the landing page essentially be the About/Profile page.
+
+1. Create a `profile.md` (or html) page with profile content
+   1. Use a `profile.ts` file to track data for re-use, and to generate anything to insert (like the sets of social media links, etc).
+
+### Tools pages
+
+... not sure what to do about these since they're the only non-static content. Maybe keep as Svelte (just without Kit)? Will have to do some experimenting.
+
+### Approach
+
 All of the content is currently in `./notes` (basically a drafts folder) and `./projects/site`. Notes can be left alone for now, but everything in the `site` project needs to be NORMALIZED for the new setup.
 
 How will all of that get normalized?
@@ -28,4 +49,26 @@ The new site will _FLATTEN EVERYTHING_. It's all about SEARCHING, not SORTING! P
   - Their contents will be added to the search index
   - Any content they _import_ will be added to their search data, and will be imported using type-appropriate mechanisms
   - JSON microdata will be added as necessary, based on the _type_ of thing, unless it's already embedded.
-    - Any files named `{slug}.{whatever}.ld.json` will be treated as _additional_ microdata to be added to the built `/{slug}` HTML.
+    - Any files named `{slug}.{whatever}.jsonld` will be treated as _additional_ microdata to be added to the built `/{slug}` HTML.
+  - Any file ending in `{slug}.{ext}.ts` (or similar) that has an exported `generate()` function will be imported and run at build time, and its content used as if it were called `{slug}.{ext}`. This can be be used to programmatically generate content when needed.
+- Will need to deal with all of these changed URLs!
+  - Create a `redirects.txt` file containing `from to` pairs per line, which can be used to automatically generate pages where pages _used to be_ and then flag them as non-canonical (or to have a server auto-redirect)
+  - Manually add any custom redirects from the old site as well. Redirects upon redirects!
+
+## Handling JSON-LD
+
+The established extension is `.jsonld`. There isn't a lot of tooling for it, unfortunately, but the [`jsonld` npm package](https://www.npmjs.com/package/jsonld) seems to be the go-to tool for doing miscellany with this kind of data. Kinda hard to tell exactly what it can do, so will require some experimentation.
+
+Relevant formats [supported by Google](https://developers.google.com/search/docs/appearance/structured-data/search-gallery) include:
+
+- Article
+- Dataset
+- Fact Check (being phased out tho)
+- FAQ (only government- or health-related are supported)
+- Image metadata
+- Profile Page
+- Q&A
+- Recipe
+- Review (probably won't show up)
+- Video
+- Website (for the home page)

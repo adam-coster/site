@@ -1,0 +1,31 @@
+{
+  "name": "Simple Syrup",
+  "description": "Add flavor and sweetness to cocktails, mocktails, and anything else.",
+  "image": "https://adamcoster.com/images/coffee/coffee-tonic.jpg",
+  "recipeIngredient": [
+    "250ml water",
+    "250g sugar"
+  ],
+  "prepTime": "PT5M",
+  "cookTime": "PT10M",
+  "recipeInstructions": [
+    {
+      "@type": "HowToStep",
+      "text": "Add sugar to water."
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Heat until sugar dissolves."
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Add any other flavors you want."
+    },
+    {
+      "@type": "HowToStep",
+      "text": "Cover and store in the refrigerator."
+    }
+  ],
+  "@context": "https://schema.org/",
+  "@type": "Recipe"
+}

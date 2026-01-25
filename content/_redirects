@@ -1,0 +1,5 @@
+/blog /
+/blog/:slug /:slug
+/about /profile
+/tools /
+/tools/:slug /:slug

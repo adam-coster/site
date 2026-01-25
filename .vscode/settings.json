@@ -21,7 +21,8 @@
 		"pnpm-lock.yaml": true
 	},
 	"explorer.fileNesting.patterns": {
-		"*.svelte": "$(capture).*",
+		"*.md": "$(capture).*",
+		"*.html": "$(capture).*",
 		"*.ts": "$(capture).*",
 		"*.js": "$(capture).*",
 		"*.mjs": "$(capture).*",
