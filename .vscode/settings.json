@@ -11,7 +11,7 @@
 		"**/node_modules": true,
 		"**/.turbo": true,
 		"**/*.tsbuildinfo": true,
-		"**/dist": true
+		"**/dist": false
 	},
 	"search.exclude": {
 		"**/package-lock.json": true,

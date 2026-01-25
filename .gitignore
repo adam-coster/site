@@ -1,4 +1,5 @@
 node_modules
+dist
 # The old version of the site had everythig in /projects.
 # For easier migration, just gitignore that folder
 projects
