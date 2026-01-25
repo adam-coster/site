@@ -1,0 +1,15 @@
+{
+	"extends": "@tsconfig/node24/tsconfig.json",
+	"compilerOptions": {
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true,
+		"strict": true,
+		"erasableSyntaxOnly": true,
+		"isolatedModules": true,
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true,
+		"resolveJsonModule": true,
+		"verbatimModuleSyntax": true
+	}
+}

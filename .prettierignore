@@ -1,0 +1,9 @@
+# Add files here to ignore them from prettier formatting
+
+node_modules
+package-lock.json
+node_modules
+
+# Ignore files for PNPM, NPM and YARN
+pnpm-lock.yaml
+package-lock.json
