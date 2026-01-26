@@ -1,7 +1,7 @@
 ---json
 {
   "$schema": "../schemas/article.schema.json",
-  "title": "🚀 Super-charge your email with your own domain, routing, aliases, and catch-alls via Google Workspace",
+  "title": "Super-charge your email with Google Workspace: routing and custom domains.",
   "description": "Using an email address with your own custom domain signals professionalism. But that's not the only benefit!\n",
   "editedAt": "2021-05-17T18:18:23.632Z",
   "publishedAt": "2021-05-16T23:32:58.825Z",

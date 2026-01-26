@@ -2,7 +2,7 @@
 {
   "$schema": "../schemas/article.schema.json",
   "crossPosts": [],
-  "description": "Custom JavaScript classes are super useful for simplifying your error-handling logic. Learn how they work, why to use them, and get templates and VSCode snippets to make them easy to add to your project.",
+  "description": "Custom JavaScript classes are super useful for simplifying error-handling logic. Learn how they work, why to use them, and get templates and snippets to add to your project.",
   "publishedAt": "2023-12-18T19:33:26.563Z",
   "editedAt": "2025-02-02T23:48:07.810Z",
   "tags": [
@@ -37,22 +37,22 @@ class MyError extends Error {}
 That's really all it takes! Then you can create and throw `MyError` instances just as you would regular `Error`s:
 
 ```js
-throw new MyError("Oh no!");
+throw new MyError('Oh no!');
 ```
 
-The one additional thing I *always* add to my custom error classes is a call to the static `Error.captureStackTrace`, which is [available on V8-based runtimes](https://v8.dev/docs/stack-trace-api#stack-trace-collection-for-custom-exceptions).
+The one additional thing I _always_ add to my custom error classes is a call to the static `Error.captureStackTrace`, which is [available on V8-based runtimes](https://v8.dev/docs/stack-trace-api#stack-trace-collection-for-custom-exceptions).
 
 Passing your error's constructor to `Error.captureStackTrace` makes it so that your constructor code won't show up in the stack trace. This isn't essential, but it makes things a little less noisy during debugging.
 
-You can take this a step further: when you have an assertion function that throws your custom error, you can pass *that* function into `Error.captureStackTrace` instead of your error's constructor. This makes your assertion-caused traces easier to read by starting the trace right where the assertion was called.
+You can take this a step further: when you have an assertion function that throws your custom error, you can pass _that_ function into `Error.captureStackTrace` instead of your error's constructor. This makes your assertion-caused traces easier to read by starting the trace right where the assertion was called.
 
-*(Since this API is only available in V8, you'll want to wrap it in an `if` or use optional chaining ([the `?.` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)) for compatibility.)*
+_(Since this API is only available in V8, you'll want to wrap it in an `if` or use optional chaining ([the `?.` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)) for compatibility.)_
 
 ```js
 export class MyError extends Error {
-	constructor(message, asserter=undefined) {
-    // (Now that we're overriding the parent `Error` 
-    //  constructor, we have to call `super`!)
+	constructor(message, asserter = undefined) {
+		// (Now that we're overriding the parent `Error`
+		//  constructor, we have to call `super`!)
 		super(message);
 		this.name = 'MyError';
 		Error.captureStackTrace?.(this, asserter || this.constructor);
@@ -67,37 +67,36 @@ JavaScript runtimes provide a base `Error` class, plus some more-specific classe
 You can differentiate between these kinds of errors using the `instanceof` operator:
 
 ```js
-try{
+try {
 	// do something naughty...
-}
-catch(err){
+} catch (err) {
 	// There's no way to know ahead of time what caused `err`, so
 	// you can use `instanceof` to help narrow down what happened.
-	if(err instanceof SyntaxError) {
+	if (err instanceof SyntaxError) {
 		// do whatever makes sense in that case
+	} else if (err instanceof TypeError) {
+		/* ...*/
 	}
-	else if(err instanceof TypeError){/* ...*/ }
 	// etc etc
 }
 ```
 
-The more information you can get from the caught error, the easier it is to handle it properly without creating *even more* problems.
+The more information you can get from the caught error, the easier it is to handle it properly without creating _even more_ problems.
 
-To that end, custom error classes let you control *exactly* what information is available during error handling, and can provide type information to reduce the chances that you create new errors during error-handling. Plus, you can add all kinds of bells and whistles to make them even *more* useful.
+To that end, custom error classes let you control _exactly_ what information is available during error handling, and can provide type information to reduce the chances that you create new errors during error-handling. Plus, you can add all kinds of bells and whistles to make them even _more_ useful.
 
 ### Case study: `ENOENT` in Node's `fs` module
 
-In Node, if you try to `fs.readFileSync()` a non-existent file, an error is thrown. If you catch that error and inspect it, you'll see that it's a regular old `Error` instance (i.e. *not* from a child class) but has had several new fields added to it: `errno`, `syscall`, `code`, and `path`.
+In Node, if you try to `fs.readFileSync()` a non-existent file, an error is thrown. If you catch that error and inspect it, you'll see that it's a regular old `Error` instance (i.e. _not_ from a child class) but has had several new fields added to it: `errno`, `syscall`, `code`, and `path`.
 
 When `try`/`catch`ing code that might throw such an error, you have to handle it like this:
 
 ```js
 import fs from 'fs';
-try{
+try {
 	fs.readFileSync('fake-file.nope');
-}
-catch(err){
-	if(err instanceof Error && 'code' in err && err.code === 'ENOENT'){
+} catch (err) {
+	if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
 		// Then this was a non-existent file error, handle accordingly!
 	}
 }
@@ -105,17 +104,16 @@ catch(err){
 
 Even once you've narrowed down that the caught error has `err.code === ENOENT`, that doesn't tell us anything else about the error instance we've caught. We have to do the same kinds of laborious checks for any other field we want to check.
 
-So not only is it clunky, it's also easy to create *more errors* from inside your `catch` block!
+So not only is it clunky, it's also easy to create _more errors_ from inside your `catch` block!
 
-However, if Node instead used a custom `FileError` class (for example), we'd only need to do *one* check and then our editor would immediately know about all other non-standard error fields provided by the custom class:
+However, if Node instead used a custom `FileError` class (for example), we'd only need to do _one_ check and then our editor would immediately know about all other non-standard error fields provided by the custom class:
 
 ```js
-import {readFileSync, FileError} from './fs-wrapper-with-custom-errors';
-try{
+import { readFileSync, FileError } from './fs-wrapper-with-custom-errors';
+try {
 	readFileSync('fake-file.nope');
-}
-catch(err){
-	if(err instanceof FileError){
+} catch (err) {
+	if (err instanceof FileError) {
 		// Then we already know that this instance will have the
 		// `errno`, `syscall`, `code`, and `path` fields, so we can
 		// get right into the handling logic!
@@ -130,26 +128,32 @@ The super-popular Node.js server library, [Express](https://expressjs.com/), has
 Used in combination with custom error classes, you can simplify a lot of otherwise-cumbersome error handling. For example, instead of having every route have its own logic for handling 404s, via its own try/catch blocks, you can use a custom error to put all of that logic in one place:
 
 ```ts
-abstract class RequestError extends Error {abstract readonly code:number}
-class NotFoundError extends RequestError {readonly code = 404;}
+abstract class RequestError extends Error {
+	abstract readonly code: number;
+}
+class NotFoundError extends RequestError {
+	readonly code = 404;
+}
 // Can add error classes for each kind of general error case!
 
-function assertFound(thing:any): asserts thing {
-	if(!thing){ throw new NotFoundError(); }
+function assertFound(thing: any): asserts thing {
+	if (!thing) {
+		throw new NotFoundError();
+	}
 }
 // Can add assertions for each kind of error case, throwing the associated error type!
 
-app.get('/some-route', (req,res)=>{
+app.get('/some-route', (req, res) => {
 	const something = getThingIfItExists();
 	assertFound(something); // throws if not found!
-  // Can now do things to `something` with confidence (and Typescript support) that it exists
+	// Can now do things to `something` with confidence (and Typescript support) that it exists
 	res.send(something);
 });
 
 // Error-catching route, allowing errors to be thrown in all other
 // routes without route-specific handling.
-app.use((err, req, res, next)=>{
-	if(err instanceof RequestError){
+app.use((err, req, res, next) => {
+	if (err instanceof RequestError) {
 		return res.sendStatus(error.code);
 	}
 });
@@ -157,7 +161,7 @@ app.use((err, req, res, next)=>{
 
 ## Time to make your own!
 
-Now that we've covered the hows and whys of custom JavaScript Error classes, we just need it to be *easy*. To that end, the remaining sections provide templates and VSCode snippets for making custom Error classes in JavaScript and Typescript.
+Now that we've covered the hows and whys of custom JavaScript Error classes, we just need it to be _easy_. To that end, the remaining sections provide templates and VSCode snippets for making custom Error classes in JavaScript and Typescript.
 
 ### Custom Error Class Template (JavaScript)
 
@@ -208,8 +212,8 @@ And a VSCode snippet to make it really easy:
 
 ```json
 {
-  // ...your other snippets
-  "Create custom JavaScript Error": {
+	// ...your other snippets
+	"Create custom JavaScript Error": {
 		"scope": "javascript",
 		"prefix": "error-custom",
 		"body": [
@@ -293,48 +297,48 @@ export function assertMyClaim(
 }
 ```
 
-And again, you *could* copy-paste this into your code and find-replace "My" with the name you want. But it'll be a lot easier to just add the following snippet to VSCode:
+And again, you _could_ copy-paste this into your code and find-replace "My" with the name you want. But it'll be a lot easier to just add the following snippet to VSCode:
 
 ```json
 {
-  // ... your other snippets
-  "Create custom Typescript Error": {
-    "scope": "typescript",
-    "prefix": "error-custom",
-    "body": [
-      "export class ${1:Custom}Error extends Error {",
-      "\t/**",
-      "\t * @param asserter The assertion function that threw the error. Removes stack-trace noise if provided.",
-      "\t */",
-      "\tconstructor(message: string, asserter?: Function) {",
-      "\t\tsuper(message);",
+	// ... your other snippets
+	"Create custom Typescript Error": {
+		"scope": "typescript",
+		"prefix": "error-custom",
+		"body": [
+			"export class ${1:Custom}Error extends Error {",
+			"\t/**",
+			"\t * @param asserter The assertion function that threw the error. Removes stack-trace noise if provided.",
+			"\t */",
+			"\tconstructor(message: string, asserter?: Function) {",
+			"\t\tsuper(message);",
 			"\t\tthis.name = '${1:Custom}Error'",
-      "\t\tError.captureStackTrace?.(this, asserter || this.constructor);",
-      "\t}",
-      "}",
-      "",
-      "export function is${1:Custom}Error(err: any): err is ${1:Custom}Error {",
-      "\treturn err instanceof ${1:Custom}Error;",
-      "}",
-      "",
-      "/**",
-      " * @param cause The cause of the error, e.g. a different, caught error",
-      " */",
-      "export function assert${1:Custom}Claim(",
-      "\tcondition: any,",
-      "\tmessage: string,",
-      "\tcause?: any,",
-      "): asserts condition {",
-      "\tif (!condition) {",
-      "\t\tconst err = new ${1:Custom}Error(message, assert${1:Custom}Claim);",
-      "\t\tif (cause) {",
-      "\t\t\terr.cause = cause;",
-      "\t\t}",
-      "\t\tthrow err;",
-      "\t}",
-      "}"
-    ],
-    "description": "Create a custom Typescript Error."
+			"\t\tError.captureStackTrace?.(this, asserter || this.constructor);",
+			"\t}",
+			"}",
+			"",
+			"export function is${1:Custom}Error(err: any): err is ${1:Custom}Error {",
+			"\treturn err instanceof ${1:Custom}Error;",
+			"}",
+			"",
+			"/**",
+			" * @param cause The cause of the error, e.g. a different, caught error",
+			" */",
+			"export function assert${1:Custom}Claim(",
+			"\tcondition: any,",
+			"\tmessage: string,",
+			"\tcause?: any,",
+			"): asserts condition {",
+			"\tif (!condition) {",
+			"\t\tconst err = new ${1:Custom}Error(message, assert${1:Custom}Claim);",
+			"\t\tif (cause) {",
+			"\t\t\terr.cause = cause;",
+			"\t\t}",
+			"\t\tthrow err;",
+			"\t}",
+			"}"
+		],
+		"description": "Create a custom Typescript Error."
 	}
 }
 ```

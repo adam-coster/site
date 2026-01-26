@@ -34,7 +34,7 @@ So, when the contestant always switches, they will win every time the initial ch
 
 <figure>
 
-![Three doors. The first is labeled "You Choose", the second is labeled "Host reveals", and the third is unlabeled. The first door is marked as the winning choice.](https://farm6.static.flickr.com/5171/5461662939_df69a199bc_o.png 'correct_choice')
+![Three doors. The first is labeled: You Choose. The second is labeled: Host reveals. The third is unlabeled. The first door is marked as the winning choice.](https://farm6.static.flickr.com/5171/5461662939_df69a199bc_o.png 'correct_choice')
 
 <figcaption>
 
@@ -46,7 +46,7 @@ Fig.1: By chance, your first choice will be correct 1/3 of the time. If you alwa
 
 <figure>
 
-![Three doors. The first is labeled "You Choose", the second is labeled "Host reveals", and the third is unlabeled. The last door is marked as the winning choice.](https://farm6.static.flickr.com/5053/5462265972_1e58686950_o.png 'incorrect_choice')
+![Three doors. The first is labeled: You Choose.The second is labeled: Host reveals. The third is unlabeled. The last door is marked as the winning choice.](https://farm6.static.flickr.com/5053/5462265972_1e58686950_o.png 'incorrect_choice')
 
 <figcaption>
 

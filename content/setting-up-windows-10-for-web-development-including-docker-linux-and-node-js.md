@@ -1,8 +1,8 @@
 ---json
 {
   "$schema": "../schemas/article.schema.json",
-  "title": "Setting up Windows 10 for web development, including Docker, Linux, and Node.js",
-  "description": "If you run your websites on Linux servers, you probably want to use Linux for development, too. Here's how to get set up for that on Windows 10.\n",
+  "title": "Setting up Windows 10 for web development: Docker, Linux, and Node.js",
+  "description": "If you run your websites on Linux servers, you probably want to use Linux for development, too. Here's how to set that up on Windows 10.",
   "editedAt": "2021-01-25T01:53:57.201Z",
   "publishedAt": "2020-12-24T22:10:11.454Z",
   "tags": [
