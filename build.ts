@@ -15,6 +15,7 @@ import { createArticleMicrodata, ldJsonify } from './schemas/microdata.ts';
 const outDir = await ensureDir('dist', true);
 const sourceDir = 'content';
 const sourceFiles = await listContentFiles(sourceDir);
+const unusedSourceFiles = new Map(sourceFiles.map(f => [f.name, f]));
 const searchDocs: {
 	slug: string;
 	title: string;
@@ -33,9 +34,11 @@ for (const file of sourceFiles) {
 	if (file.kind === 'static') {
 		// Just copy it! But strip off the '$' prefix
 		await copyFile(file.path, `${outDir}/${file.name.slice(1)}`);
+		unusedSourceFiles.delete(file.name);
 		continue;
 	} else if (['jpg', 'png', 'gif', 'jpeg'].includes(file.type)) {
 		await copyFile(file.path, `${outDir}/${file.name}`);
+		unusedSourceFiles.delete(file.name);
 		continue;
 	}
 	const microdatas: any[] = [];
@@ -45,7 +48,10 @@ for (const file of sourceFiles) {
 		);
 		microdatas.push(
 			...((await Promise.all(
-				matchingJsonLds.map(ld => readJsonFile(ld.path)),
+				matchingJsonLds.map(ld => {
+					unusedSourceFiles.delete(ld.name);
+					return readJsonFile(ld.path);
+				}),
 			)) as any[]),
 		);
 	}
@@ -67,9 +73,14 @@ for (const file of sourceFiles) {
 			...content.meta,
 			body: content.body,
 		});
-	} else {
-		console.log('NOT A PAGE', file.name);
+		unusedSourceFiles.delete(file.name);
 	}
+}
+
+if (unusedSourceFiles.size > 0) {
+	console.error('Some files not used during build:');
+	console.error(unusedSourceFiles.keys());
+	throw new Error();
 }
 
 // Search index.
