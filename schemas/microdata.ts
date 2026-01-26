@@ -65,7 +65,7 @@ export function ldJsonify<T extends MicrodataSchema>(schemas: T[]) {
  * @see https://developers.google.com/search/docs/advanced/structured-data/article#non-amp
  */
 export function createArticleMicrodata(info: {
-	headline: string;
+	title: string;
 	/**
 	 * If provided, images must belong to the article,
 	 * crawlable & indexable, high-rez, preferred to
@@ -73,23 +73,23 @@ export function createArticleMicrodata(info: {
 	 * any of BMP, GIF, JPEG, PNG, WebP, and SVG
 	 */
 	images?: string[];
-	datePublished: string | Date;
-	dateModified?: Date | string;
+	publishedAt?: string | Date;
+	editedAt?: Date | string;
 }): ArticleSchema {
-	const datePublished = dateToIso(info.datePublished);
+	const datePublished = dateToIso(info.publishedAt || new Date());
 	// Google requires headline length to be no more than 110 characters
 	const maxHeadlineLength = 110;
 	const headline =
-		info.headline.length > maxHeadlineLength
-			? info.headline.slice(0, maxHeadlineLength - 1) + '…'
-			: info.headline;
+		info.title.length > maxHeadlineLength
+			? info.title.slice(0, maxHeadlineLength - 1) + '…'
+			: info.title;
 	return {
 		'@type': 'Article',
 		headline,
 		author: me,
 		datePublished,
-		dateModified: info.dateModified
-			? dateToIso(new Date(info.dateModified))
+		dateModified: info.editedAt
+			? dateToIso(new Date(info.editedAt))
 			: datePublished,
 		image: info.images?.map(asCanonicalUrl),
 	};

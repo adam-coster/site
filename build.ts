@@ -1,6 +1,7 @@
 import {
 	ensureDir,
 	listContentFiles,
+	readJsonFile,
 	readTextFile,
 	writeJson,
 } from './build.utilities.ts';
@@ -9,6 +10,7 @@ import { articleSchema } from './schemas/article.schema.ts';
 import { processMarkdownPage } from './build.markdown.ts';
 import { formatHtml } from './build.html.ts';
 import lunr from 'lunr';
+import { createArticleMicrodata, ldJsonify } from './schemas/microdata.ts';
 
 const outDir = await ensureDir('dist', true);
 const sourceDir = 'content';
@@ -32,13 +34,31 @@ for (const file of sourceFiles) {
 		// Just copy it! But strip off the '$' prefix
 		await copyFile(file.path, `${outDir}/${file.name.slice(1)}`);
 		continue;
-	} else if (file.type === 'md' && !file.id) {
+	} else if (['jpg', 'png', 'gif', 'jpeg'].includes(file.type)) {
+		await copyFile(file.path, `${outDir}/${file.name}`);
+		continue;
+	}
+	const microdatas: any[] = [];
+	if (!file.id) {
+		const matchingJsonLds = sourceFiles.filter(
+			f => f.kind === 'content' && f.slug === file.slug && f.type === 'jsonld',
+		);
+		microdatas.push(
+			...((await Promise.all(
+				matchingJsonLds.map(ld => readJsonFile(ld.path)),
+			)) as any[]),
+		);
+	}
+
+	if (file.type === 'md' && !file.id) {
 		// Then this is a markdown page!
 		const md = await readTextFile(file.path);
 		const content = processMarkdownPage(file.slug, md);
-		// DRAFT: Needs header, footer, meta, JSONLD, etc
+		microdatas.push(createArticleMicrodata(content.meta));
+		const microdataString = ldJsonify(microdatas);
+		// TODO: Needs header, footer, meta, JSONLD, etc
 		let html = await formatHtml(
-			`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${content.meta.title}</title></head><body>${content.html}</body></html>`,
+			`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${content.meta.title}</title>${microdataString}</head><body>${content.html}</body></html>`,
 		);
 		const outFile = `${await ensureDir(`${outDir}/${file.slug}`)}/index.html`;
 		await writeFile(outFile, html);
@@ -47,9 +67,12 @@ for (const file of sourceFiles) {
 			...content.meta,
 			body: content.body,
 		});
+	} else {
+		console.log('NOT A PAGE', file.name);
 	}
 }
 
+// Search index.
 const searchIndex = lunr(function () {
 	this.ref('slug');
 	this.field('title', { boost: 5 });
