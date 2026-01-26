@@ -3,6 +3,7 @@
 - [ ] Find all content and get it _normalized_ into [/content](/content/)
 - [ ] Write a script that can process all of that content to convert it into HTML, extract text for indexing, extract structured data for microdata, etc.
 - [ ] Create a build process that assembles the whole site.
+- [ ] Somehow deal with existing service worker caches...
 
 ## Content Normalization
 

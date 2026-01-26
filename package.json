@@ -2,16 +2,23 @@
 	"name": "@local/root",
 	"private": true,
 	"description": "Monorepo root, for managing shared dependencies, build scripts, etc.",
-	"scripts": {},
-	"dependencies": {
-		"prettier": "3.4.2",
-		"typescript": "5.7.2"
+	"scripts": {
+		"build": "node build.ts",
+		"preview": "pnpm build && node build.preview.ts"
 	},
-	"devDependencies": {
+	"dependencies": {
+		"@hono/node-server": "1.19.9",
 		"@tsconfig/node24": "24.0.4",
 		"@types/node": "22.10.5",
 		"eslint": "9.17.0",
-		"schema-dts": "1.1.5"
+		"highlight.js": "11.11.1",
+		"hono": "4.11.5",
+		"marked": "17.0.1",
+		"marked-highlight": "2.2.3",
+		"prettier": "3.4.2",
+		"schema-dts": "1.1.5",
+		"typescript": "5.7.2",
+		"zod": "4.3.6"
 	},
 	"packageManager": "pnpm@8.3.1",
 	"engines": {

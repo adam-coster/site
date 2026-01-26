@@ -67,3 +67,40 @@ export async function nukeDir(path: string): Promise<void> {
 			// Directory does not exist, nothing to do
 		});
 }
+
+export async function fileExists(path: string): Promise<boolean> {
+	try {
+		await fsp.access(path);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+export async function readTextFile(path: string): Promise<string> {
+	return await fsp.readFile(path, 'utf8');
+}
+
+export async function readJsonFile(path: string): Promise<unknown> {
+	return JSON.parse(await fsp.readFile(path, 'utf8'));
+}
+
+export function extensionToMimetype(ext: string): string {
+	// In case it's a full path, strip up to the ext
+	ext = ext.replace(/^.*\./, '').toLowerCase();
+	switch (ext) {
+		case 'html':
+		case 'css':
+			return `text/${ext}`;
+		case 'json':
+			return 'application/json';
+		case 'js':
+			return 'text/javascript';
+		case 'png':
+		case 'jpeg':
+		case 'gif':
+			return `image/${ext}`;
+		default:
+			return 'text/plain';
+	}
+}
