@@ -7,6 +7,9 @@ dependencies:
   '@tsconfig/node24':
     specifier: 24.0.4
     version: 24.0.4
+  '@types/lunr':
+    specifier: 2.3.7
+    version: 2.3.7
   '@types/node':
     specifier: 22.10.5
     version: 22.10.5
@@ -19,6 +22,9 @@ dependencies:
   hono:
     specifier: 4.11.5
     version: 4.11.5
+  lunr:
+    specifier: 2.3.9
+    version: 2.3.9
   marked:
     specifier: 17.0.1
     version: 17.0.1
@@ -157,6 +163,10 @@ packages:
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+    dev: false
+
+  /@types/lunr@2.3.7:
+    resolution: {integrity: sha512-Tb/kUm38e8gmjahQzdCKhbdsvQ9/ppzHFfsJ0dMs3ckqQsRj+P5IkSAwFTBrBxdyr3E/LoMUUrZngjDYAjiE3A==}
     dev: false
 
   /@types/node@22.10.5:
@@ -509,6 +519,10 @@ packages:
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+    dev: false
+
+  /lunr@2.3.9:
+    resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
     dev: false
 
   /marked-highlight@2.2.3(marked@17.0.1):

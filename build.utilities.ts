@@ -85,6 +85,10 @@ export async function readJsonFile(path: string): Promise<unknown> {
 	return JSON.parse(await fsp.readFile(path, 'utf8'));
 }
 
+export async function writeJson(path: string, data: unknown): Promise<void> {
+	await fsp.writeFile(path, JSON.stringify(data, null, 2), 'utf8');
+}
+
 export function extensionToMimetype(ext: string): string {
 	// In case it's a full path, strip up to the ext
 	ext = ext.replace(/^.*\./, '').toLowerCase();
