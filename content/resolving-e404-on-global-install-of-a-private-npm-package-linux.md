@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Resolving E404 on global install of a private npm package (Linux)",
   "description": "If you're getting E404 \"Not Found\" when trying to install a private npm package, make sure you're logged into the right scope (root or user).\n",
   "publishedAt": "2021-03-28T17:46:28.645Z",

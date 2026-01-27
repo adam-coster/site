@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Create a live-reload server for front-end development",
   "description": "Manually reloading a webpage when you make changes is a pain. You can solve this with a live-reload server. Here's how to make one.\n",
   "editedAt": "2021-01-23T23:48:41.643Z",

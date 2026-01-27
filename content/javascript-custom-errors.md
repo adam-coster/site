@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "crossPosts": [],
   "description": "Custom JavaScript classes are super useful for simplifying error-handling logic. Learn how they work, why to use them, and get templates and snippets to add to your project.",
   "publishedAt": "2023-12-18T19:33:26.563Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "CommonJS (cjs) and Modules (esm): Import compatibility",
   "description": "You can import CommonJS (cjs) into ESM modules, and vice versa (esm into cjs). But one way is easier than the other.",
   "publishedAt": "2022-03-09T06:00:00.000Z",

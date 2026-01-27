@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Poking the Fan",
   "description": "Sometimes a problem is a lot simpler than it seems. Give it a poke to find out!",
   "publishedAt": "2025-05-09T22:43:27.392Z",

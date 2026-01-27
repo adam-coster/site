@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "💻 Documentation as code",
   "description": "Documenting code in a scalable and maintainable way seems to be impossible. Let's re-think it.\n",
   "editedAt": "2021-04-08T12:36:58.240Z",

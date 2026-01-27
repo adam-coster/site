@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "crossPosts": [
     "https://dev.to/adamcoster/configure-pnpm-for-the-best-possible-developer-experience-a17"
   ],
@@ -34,11 +34,11 @@ There are some differences that are good to be aware of:
 - You can also run your installed binaries with `pnpm <command>`. For example, you might want to run local versions of Typescript (`pnpm tsc`) or eslint (`pnpm eslint`). npm uses a separate command (`npx`) to run binaries.
 - pnpm separates the installing the dependencies listed in your `package.json` (via the command `pnpm install`) from adding new dependencies (via the command `pnpm add`). npm uses `npm install` for both.
 - To add a local dependency within a monorepo, in your `package.json` `"dependencies"` field you'll prefix your local dependencies' version-range strings with `workspace:` (a.k.a. the "workspace protocol"). When publishing, pnpm resolves those prefixed versions to their actual versions in the published packages. For example, if I have package `a` depending on `b` in my monorepo, the `package.json` for `a` would look like:
-    ```json5
-    "dependencies":{
-      "b": "workspace:*" // (where '*' means "any version")
-    }
-    ```
+  ```json5
+  "dependencies":{
+    "b": "workspace:*" // (where '*' means "any version")
+  }
+  ```
 
 There are many other differences, but the above are the most likely to trip you up when switching from npm.
 
@@ -48,7 +48,7 @@ I recommend [using corepack](/blog/corepack-ensures-consistent-pnpm-version) sin
 
 ## Basic setup for monorepos
 
-There is only one thing you *need* to do to enable pnpm for your monorepo: add a `pnpm-workspace.yaml` file alongside your root `package.json`. It should look like this:
+There is only one thing you _need_ to do to enable pnpm for your monorepo: add a `pnpm-workspace.yaml` file alongside your root `package.json`. It should look like this:
 
 ```yaml
 # The only field in this config file!
@@ -67,20 +67,20 @@ While the switch from npm to pnpm is pretty smooth, there are some changes you'l
 - In your `package.json` files, update all local dependency listings to use the workspace protocol. For example, `{dependencies:{myLocalPackage:"^1.2.3"}}` would become `{dependencies:{myLocalPackage:"workspace:*"}}`
 - Find all instances of the words "npm" and "npx" across all projects and replace them with `pnpm`. You can use a regex search like `\bnp[mx]\b` and restrict the search to appropriate filepaths to do this quickly and with minimal error.
 - Update your VSCode `settings.json`:
-    ```json5
-    //...
-    "search.exclude": {
-      // Avoid polluting search results with lockfile content
-      "pnpm-lock.yaml": true,
-    },
-    // Ensure VSCode uses pnpm instead of npm
-    "eslint.packageManager": "pnpm",
-    "npm.packageManager": "pnpm",
-    // For those using file-nesting, nest the new files. E.g.:
-    "explorer.fileNesting.patterns":{
-      "package.json": "pnpm-workspace.yaml, pnpm-lock.yaml"
-    }
-    ```
+  ```json5
+  //...
+  "search.exclude": {
+    // Avoid polluting search results with lockfile content
+    "pnpm-lock.yaml": true,
+  },
+  // Ensure VSCode uses pnpm instead of npm
+  "eslint.packageManager": "pnpm",
+  "npm.packageManager": "pnpm",
+  // For those using file-nesting, nest the new files. E.g.:
+  "explorer.fileNesting.patterns":{
+    "package.json": "pnpm-workspace.yaml, pnpm-lock.yaml"
+  }
+  ```
 
 ## Get the best developer experience
 
@@ -90,15 +90,15 @@ The pnpm experience is solid from the jump, but you can make it GREAT by digging
 
 Just like npm, pnpm reads configuration information from `.npmrc` files. These files use `key=value` pairs to set config options.
 
-Notably, any configuration settings in your repo-root `.npmrc` file will *also apply* to all of the packages within your monorepo! This is super useful, since it allows you to centralize your pnpm settings. You can even override settings for a specific package by adding a different `.npmrc` alongside that package's `package.json`.
+Notably, any configuration settings in your repo-root `.npmrc` file will _also apply_ to all of the packages within your monorepo! This is super useful, since it allows you to centralize your pnpm settings. You can even override settings for a specific package by adding a different `.npmrc` alongside that package's `package.json`.
 
 Create a `.npmrc` file alongside your root `package.json` file, and then set the following (see [the docs](https://pnpm.io/npmrc) for all options):
 
 - `use-node-version=18.16.0` (or whatever version you want). This setting causes pnpm to use the listed Node version for its operations, including when you run your `package.json` scripts or run node itself (if you do so via `pnpm node` instead of calling `node` directly). pnpm will even install that version for you if it isn't already available! You can also change this setting for any specific package, allowing you to ensure that your packages are always using the node version you want without you ever having to think about it.
 - `strict-peer-dependencies=false` Peer dependencies are a nightmare. I always set this to `false` to make them less so.
 - `publish-branch=main` (or whatever your main git branch is). This prevents `pnpm publish` from running if you aren't on the specified branch, which can save you some headaches.
-- `save-prefix=""`. This makes it so that *exact* versions are used when you run `pnpm add`. This is a good default since it's the safest, and you can always change the behavior for specific dependencies by manually editing their version (e.g. by changing `"1.1.3"` to `"^1.1.3"`).
-- `link-workspace-packages=false`. Your monorepo packages can depend on each other, but how does pnpm decide if you mean the *local* version of a dependency (allowing symlinking right to the source) versus a specific past version (requiring downloading separate files)? pnpm provides a few ways to handle this, but setting this option to `false` is the most predictable and explicit. And that means fewer surprises! This option tells pnpm to *only* resolve local deps to the local files when the `workspace:` protocol is used, and to otherwise download published versions.
+- `save-prefix=""`. This makes it so that _exact_ versions are used when you run `pnpm add`. This is a good default since it's the safest, and you can always change the behavior for specific dependencies by manually editing their version (e.g. by changing `"1.1.3"` to `"^1.1.3"`).
+- `link-workspace-packages=false`. Your monorepo packages can depend on each other, but how does pnpm decide if you mean the _local_ version of a dependency (allowing symlinking right to the source) versus a specific past version (requiring downloading separate files)? pnpm provides a few ways to handle this, but setting this option to `false` is the most predictable and explicit. And that means fewer surprises! This option tells pnpm to _only_ resolve local deps to the local files when the `workspace:` protocol is used, and to otherwise download published versions.
 - `save-workspace-protocol=rolling`. This dictates how `pnpm add` decides whether or not to include the `workspace:` prefix and whether or not the version will be specified. Whatever default you choose, you can easily override a dependency by manually editing its version string in your `package.json` dependencies. There's significant nuance in which option to choose for defaults that make sense for your use case:
   - `false`: Never use the `workspace:` prefix. In combination with `link-workspace-packages=false` newly-added deps will always resolve to published, _static_ artifacts (instead of local ones). This yields the fewest surprises, but doesn't let you take full advantage of having all of your packages in one repo.
   - `true`: Always include the `workspace:` prefix _and_ the version of the dep at the time of `pnpm add`, for local dependencies. This is the most balanced choice if you have really good versioning and testing tooling, since you can still do rapid development across dependency boundaries but will get alerted when a dep gets bumped too far.
@@ -106,7 +106,7 @@ Create a `.npmrc` file alongside your root `package.json` file, and then set the
 
 ## Manage dependency versions with syncpack and depcheck
 
-pnpm helps to reduce downloads and the size of dependencies on disk by symlinking shared dependencies. However, when your shared dependencies use incompatible versions you lose a lot of those benefits. This is a particular problem when you use the more conservative settings recommended above, like forcing *exact* versions of dependencies instead of ranges.
+pnpm helps to reduce downloads and the size of dependencies on disk by symlinking shared dependencies. However, when your shared dependencies use incompatible versions you lose a lot of those benefits. This is a particular problem when you use the more conservative settings recommended above, like forcing _exact_ versions of dependencies instead of ranges.
 
 To mitigate this, I recommend using [syncpack](https://www.npmjs.com/package/syncpack). Syncpack looks at all of your `package.json` files to find all common dependencies, and ensures they're all at the same version. If you need more nuance than that, it also has a lot of configuration options.
 

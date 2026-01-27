@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "The Monty Hall problem modeled in Python",
   "description": "The Monty Hall problem is a classic example of how difficult statistical reasoning can be. Let's simulate it in Python.\n",
   "publishedAt": "2011-02-20T00:00:00.000Z",

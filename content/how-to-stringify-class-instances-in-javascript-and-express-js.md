@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "How to stringify class instances in Javascript and Express.js",
   "description": "Bend JSON stringification to your will with custom .toJSON() class methods and replacers.\n",
   "editedAt": "2021-01-23T23:51:07.836Z",

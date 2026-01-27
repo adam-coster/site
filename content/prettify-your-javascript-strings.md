@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Prettify your JavaScript strings",
   "description": "Use JavaScript's template literals to make it a breeze to stick strings together and insert data into them.\n",
   "publishedAt": "2021-02-01T15:00:13.713Z",

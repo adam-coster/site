@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Super Simple Cold Brew Coffee",
   "description": "All you need is a jar, a tea infuser, and some ground coffee.",
   "publishedAt": "2024-04-21T19:54:02.293Z",

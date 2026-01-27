@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "✂ Save time and make fewer mistakes with Snippets",
   "description": "If you aren't using snippets in VSCode, you're going to be bummed when you find out how much time you could have been saving...\n",
   "publishedAt": "2021-06-01T12:32:00.429Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Apple's 15% cut for non-millionaires: PR move or sound investment?",
   "description": "The announcement created a lot of buzz, and a lot of questions. Is it \"just a PR stunt\" to help Apple's side of its various anti-monopoly suits?\n",
   "publishedAt": "2020-11-18T06:00:00.000Z",

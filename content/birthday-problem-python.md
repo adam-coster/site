@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "The \"Birthday Problem\" simulated with Python",
   "description": "There's better than a 50% chance that 2 of any 25 random people will share the same birthday. That's hard to believe. Let's simulate it!\n",
   "publishedAt": "2011-07-13T00:00:00.000Z",

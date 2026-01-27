@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Protect your class constructors to create async instances in Typescript",
   "description": "Async functions simplify so many things in JavaScript, but there's one core kind of function that doesn't get any of those benefits: class constructors.",
   "publishedAt": "2025-03-27T23:12:47.396Z",
@@ -29,11 +29,11 @@ I like to do this using a static method on the same class, since it's more disco
 
 ```ts
 class MyAsyncClass {
-	async init(){
+	async init() {
 		// do async stuff
 	}
 
-	static async create(){
+	static async create() {
 		const instance = new MyAsyncClass();
 		await instance.init(); // Some kind of initalizer
 		return instance;
@@ -42,11 +42,11 @@ class MyAsyncClass {
 const instance = await MyAsyncClass.create();
 ```
 
-But! In either case, we have a class that *should not be instanced with `new`* in public contexts. And an initializer that must always be called, but only once, and so is dangerous if it's just *public*. A user could simply `new MyAsyncClass()` without realizing that they now have a broken instance that was never initialized. Or call `.init()` on an already-initialized instance.
+But! In either case, we have a class that _should not be instanced with `new`_ in public contexts. And an initializer that must always be called, but only once, and so is dangerous if it's just _public_. A user could simply `new MyAsyncClass()` without realizing that they now have a broken instance that was never initialized. Or call `.init()` on an already-initialized instance.
 
 You can prevent this problem in Typescript (or JavaScript via JSDocs) by marking the constructor `protected` (you can also mark it `private`, but then you won't be able to extend your class as easily).
 
-The idea is that marking your constructor function `protected` causes Typescript to error out if you try to call `new` outside of your class, thus preventing uncontrolled instance creation. Coupled with a protected async initializer, you can fully prevent any creation (or re-initialization) of class instances except through the one *correct* route you provide.
+The idea is that marking your constructor function `protected` causes Typescript to error out if you try to call `new` outside of your class, thus preventing uncontrolled instance creation. Coupled with a protected async initializer, you can fully prevent any creation (or re-initialization) of class instances except through the one _correct_ route you provide.
 
 (This is only a compile-time protection! Calling `new` on a Typescript/JSDoc-protected constructor is fully valid JavaScript!)
 

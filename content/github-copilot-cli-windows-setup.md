@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "publishedAt": "2023-04-30T16:20:18.380Z",
   "tags": [
     "copilot",
@@ -17,7 +17,7 @@
 
 GitHub Copilot CLI is rolling out into early access, but the setup instructions are for Linux/MacOS systems. Here's how to get it working on Windows.
 
-*(There's a good chance this post will go out of date quickly!)*
+_(There's a good chance this post will go out of date quickly!)_
 
 ## 🔥 Compatibility Notes
 
@@ -30,11 +30,13 @@ GitHub Copilot CLI is rolling out into early access, but the setup instructions 
 1. [Install NodeJS](https://nodejs.org/en) if you don't already have it.
 2. [Install Git and Git Bash](https://git-scm.com/) if you haven't already (Git Bash comes with Git for Windows, but I can't remember if it might be optional so make sure you check that box).
 3. Install [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal-preview/9N8G5RFZ9XK3), [Visual Studio Code](https://code.visualstudio.com/), or some other terminal emulator.
-4. ⚠️ *All following terminal commands assume you're using Git Bash in a compatible terminal emulator!*
+4. ⚠️ _All following terminal commands assume you're using Git Bash in a compatible terminal emulator!_
 5. Install Copilot CLI [from npm](https://www.npmjs.com/package/@githubnext/github-copilot-cli). The `npm` command comes with your NodeJS installation; in a terminal, run:
-  ```
-  npm install --global @githubnext/github-copilot-cli
-  ```
+
+```
+npm install --global @githubnext/github-copilot-cli
+```
+
 6. Run `github-copilot-cli alias /usr/bin/bash >> ~/.bashrc`. This adds the `??` and related aliases to Git Bash by appending them to your `.bashrc` file.
 7. ⚠️ As of writing, the alias-generation command writes paths incorrectly on Windows. Open up your `~/.bashrc` file, find the paths, and replace all of the `\` separators with `/`. You can edit it with VSCode (`code ~/.bashrc`) or your favorite text editor.
 8. Either reboot your terminal, or run `source ~/.bashrc` (just this once) to get your aliases.

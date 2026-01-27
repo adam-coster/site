@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Links, Deep Links, URLs, URIs, ... OH MY",
   "description": "Links make the web what is is, but links aren't just for browsers. Here's how they work, and the differences between links, hyperlinks, deep links, URLs, and URIs.",
   "publishedAt": "2025-01-11T23:07:31.970Z",
@@ -39,7 +39,7 @@ For example, _I_ am a specific resource. I can be associated with all kinds of i
 
 An identifier is most useful when the resource it identifies is unambiguous. So my first name is a great identifier when no one else in the room is _also_ named Adam. But if someone else is then my full name, or a nickname, or some other disambiguating identifier would be better.
 
-Thus, an identifier is at its best when it *includes* the very context needed to make it unique.
+Thus, an identifier is at its best when it _includes_ the very context needed to make it unique.
 
 ### Back to URIs
 
@@ -78,7 +78,7 @@ The difference is in the name: a URI is all about the _identifier_, while a URL 
 
 Honestly, the difference is pretty academic and, in my opinion, not that important. The terms are used synonymously by most people, and whenever you find an explanation you'll see things get ambiguous really fast. For example, you can have perfectly formatted URIs that _look exactly like_ a valid website URL, but that particular URI might just be meant to _represent_ a resource rather than actually take you to it.
 
-So if you call a URL a URI you'll always be correct. If you call a URI a URL you might be *technically* incorrect, but almost never in a way that matters.
+So if you call a URL a URI you'll always be correct. If you call a URI a URL you might be _technically_ incorrect, but almost never in a way that matters.
 
 ## Links versus Hyperlinks
 
@@ -94,7 +94,7 @@ You could paste it into your browser's address bar, which tells your browser to 
 
 Or, you could turn it into a _hyperlink_ to share in some kind of digital software so that you (or someone else) can easily get to that website in the browser just by clicking the hyperlink. That's all that a link is: some kind of functional wrapper around a URI that you can click on to navigate to the designated resource.
 
-On the web, what we mostly mean by a "link" is a piece of text wrapped in an HTML `<a>` element, for example `<a href="https://example.com">visible text</a>`. The default behavior of a browser is to visit the URI of the link when you click it. But a link doesn't *have* to be an HTML `<a/>` tag. Webpages can emulate the same behavior in all kinds of ways, and non-browser software can do the same. But the idea is the same: a link is a functional element of a software's user interface that, when clicked, takes you to the URI associated with that link.
+On the web, what we mostly mean by a "link" is a piece of text wrapped in an HTML `<a>` element, for example `<a href="https://example.com">visible text</a>`. The default behavior of a browser is to visit the URI of the link when you click it. But a link doesn't _have_ to be an HTML `<a/>` tag. Webpages can emulate the same behavior in all kinds of ways, and non-browser software can do the same. But the idea is the same: a link is a functional element of a software's user interface that, when clicked, takes you to the URI associated with that link.
 
 However, people often use "link" as a synonym for "URL" (though not vice versa). So when someone says, "send me the link!" what they actually want is the URL. But depending on how you send it to them, they might get a link _to_ that URL. And, for practical purposes, the link to the URL is usually more useful.
 
@@ -102,10 +102,10 @@ This synonym-ization is probably because so many kinds of software these days wi
 
 ## What's a Deep Link?
 
-A "deep link" is a link to a URI that is meant to be opened in something *other* than a browser. They come in two flavors, named a bit differently by platform.
+A "deep link" is a link to a URI that is meant to be opened in something _other_ than a browser. They come in two flavors, named a bit differently by platform.
 
 1. "Universal Links" (iOS) and "Android App Links" (Android) are generally regular old `http` URLs, but which are meant to be opened by a non-browser application if it is installed on the user's device. If that app isn't installed, the URL can be opened in the browser instead: it's universal! This is mediated by a combination of metadata hosted by the URL's server, and by metadata included with the installed application.
-2. "Custom URLs" (iOS) and "Deep Links" (Android) are URIs using *any* scheme, meant to *only* be opened by a specific non-browser application. These are mediated by the installed application and don't need server support. This feature is also supported by Windows and MacOS.
+2. "Custom URLs" (iOS) and "Deep Links" (Android) are URIs using _any_ scheme, meant to _only_ be opened by a specific non-browser application. These are mediated by the installed application and don't need server support. This feature is also supported by Windows and MacOS.
 
 People colloquially lump all of that together under the term "deep link". So when you see that term used you can assume it to mean "opens within a non-browser app", but that's about all you can assume without additional information.
 
@@ -115,7 +115,7 @@ Universal-style deep links are useful for app versions of websites, allowing a s
 
 ### Custom Scheme URIs
 
-Custom-scheme-style deep links are useful for URIs that should *always* be opened in an application (other than a browser), and that have no meaningful fallback in a browser. Further, it's the only way to deep link on desktop. So if you need to deep link on desktop and don't want to have *two* URIs for the same resource (one universal for mobile and browser, one with a custom scheme for desktop), you're stuck with using custom schemes.
+Custom-scheme-style deep links are useful for URIs that should _always_ be opened in an application (other than a browser), and that have no meaningful fallback in a browser. Further, it's the only way to deep link on desktop. So if you need to deep link on desktop and don't want to have _two_ URIs for the same resource (one universal for mobile and browser, one with a custom scheme for desktop), you're stuck with using custom schemes.
 
 One of my favorite examples of deep-linking via a custom scheme is how [Visual Studio Code](https://code.visualstudio.com/) (VSCode) uses the `vscode` URI scheme to link from its published patch notes directly to the relevant setting in the installed app. It's a beautiful use case: VSCode has jillions of configuration options, so doing through the process of opening the app, getting to the settings page, searching for the target setting, and then finding it, can be quite tedious. Being able to link directly to said setting right from a web page makes things dramatically smoother.
 
@@ -123,6 +123,6 @@ In fact, each setting in VSCode as an option to "copy as URL", which will give y
 
 The biggest downside of Custom Scheme URIs is that they don't fail gracefully. If the associated app isn't installed, clicking a link for such a URI will just fail. In Chrome you'd just not see anything happen, but if you opened the console you'd see an error message. But that error isn't catchable, so there's no way to detect that a user has tried to follow a link that doesn't work on their device, preventing you from giving them instructions when things go awry. That's probably the main reason we so rarely see Custom Scheme URIs in the wild.
 
-The next-biggest downside is that lots of applications where you'd want to plop down some links (Notion, Google Docs, Discord, etc) assume you've made a mistake when you try to link to a Custom Scheme URI and so they simply *don't let you* link them. Future readers of those materials will have to manually copy/paste those URIs into the browser box rather than just being able to click a link.
+The next-biggest downside is that lots of applications where you'd want to plop down some links (Notion, Google Docs, Discord, etc) assume you've made a mistake when you try to link to a Custom Scheme URI and so they simply _don't let you_ link them. Future readers of those materials will have to manually copy/paste those URIs into the browser box rather than just being able to click a link.
 
 A solution to the prior issue is to use a redirection service that provides a regular `https` URL (that is thus linkable everywhere) that, when visited, will redirect to the URI using your custom scheme. Since I need this for my own purposes, I've made just such [a Custom Scheme URI redirection service](https://bscotch.github.io/redirect/) that anyone can use.

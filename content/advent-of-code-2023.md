@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Advent of Code 2023 in JavaScript",
   "description": "Discussion and solutions for some of the 2023 Advent of Code puzzles, written in Node.js/JavaScript.",
   "publishedAt": "2023-12-03T20:05:15Z",
@@ -18,7 +18,7 @@ It's been a few years since I did [Advent of Code](https://adventofcode.com/), t
 
 (I had to disable copilot while solving these to prevent it from solving them for me!)
 
-**⚠️SPOILERS AHEAD⚠️** *if you want to solve these yourself, don't read any further!*
+**⚠️SPOILERS AHEAD⚠️** _if you want to solve these yourself, don't read any further!_
 
 ## General Notes
 
@@ -61,7 +61,7 @@ a1b2c3d4e5f # 15
 treb7uchet # 77
 ```
 
-The samples show that there can be *more than 2* numbers, so we can't just grab the numbers and be done with it. The 4th sample shows that there can be *exactly one* number. So if we were to get all numbers, in order, as an array, we can just grab the first and last entry (which might be the same!).
+The samples show that there can be _more than 2_ numbers, so we can't just grab the numbers and be done with it. The 4th sample shows that there can be _exactly one_ number. So if we were to get all numbers, in order, as an array, we can just grab the first and last entry (which might be the same!).
 
 ```js
 /** @param {string} input */
@@ -95,10 +95,9 @@ zoneight234 # 14
 7pqrstsixteen # 76
 ```
 
-Note that the spelled-out numbers can share a letter, so it's a bit more complicated than just directly using a regex like `/\d|one|two|three)/`, since one match can block an overlapping one. But we can do *basically* that, just grabbing one match at a time and keeping track of the index position.
+Note that the spelled-out numbers can share a letter, so it's a bit more complicated than just directly using a regex like `/\d|one|two|three)/`, since one match can block an overlapping one. But we can do _basically_ that, just grabbing one match at a time and keeping track of the index position.
 
-To do that I used a ["sticky" regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) which, when used with `.execute`, checks for a match starting *exactly* at `pattern.lastIndex`.
-
+To do that I used a ["sticky" regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) which, when used with `.execute`, checks for a match starting _exactly_ at `pattern.lastIndex`.
 
 ```js
 /** @param {string} input */
@@ -126,7 +125,7 @@ function solveDay1Part2(input) {
 				pattern.lastIndex = i;
 				const match = pattern.exec(row);
 				if (!match) continue;
-				const namedValue = numNames.findIndex((name) => name === match[0]);
+				const namedValue = numNames.findIndex(name => name === match[0]);
 				allNums.push(namedValue > 0 ? `${namedValue}` : match[0]);
 			}
 			const num = +(allNums[0] + allNums.at(-1));
@@ -136,7 +135,6 @@ function solveDay1Part2(input) {
 ```
 
 ## Day 2: Cube Conundrum
-
 
 The data for this puzzle is comes from the results of a "Game" that works like this:
 
@@ -167,9 +165,9 @@ function parseDay2Input(input) {
 	return input
 		.trim()
 		.split(/[\r\n]+/g)
-		.map((row) => {
+		.map(row => {
 			const { id, allSamples } = row.match(rowPattern).groups;
-			const samples = allSamples.split(/\s*;\s*/g).map((sample) =>
+			const samples = allSamples.split(/\s*;\s*/g).map(sample =>
 				sample.split(/\s*,\s*/g).reduce((cleaned, valueString) => {
 					const { count, color } = valueString.match(sampleColorPattern).groups;
 					cleaned[color] = +count;
@@ -192,8 +190,8 @@ That parser results in data that looks like this:
 			{ "green": 3, "blue": 1, "red": 1 },
 			{ "green": 4, "blue": 3, "red": 1 },
 			{ "green": 4, "blue": 2, "red": 1 },
-			{ "blue": 3, "green": 3 }
-		]
+			{ "blue": 3, "green": 3 },
+		],
 	},
 	// ...
 ]
@@ -204,12 +202,12 @@ That parser results in data that looks like this:
 For Part 1, our goal is to:
 
 1. Identify which games would have been possible if the bag contained:
-	- 12 red cubes
-	- 13 green cubes 
-	- 14 blue cubes
+   - 12 red cubes
+   - 13 green cubes
+   - 14 blue cubes
 2. Sum the IDs of all possible games to get the puzzle solution.
 
-To solve this, for each game we need to use the samples to get the *max* number of each color and make sure that maximum value isn't greater than the target values.
+To solve this, for each game we need to use the samples to get the _max_ number of each color and make sure that maximum value isn't greater than the target values.
 
 ```js
 /** @param {string} input */
@@ -220,10 +218,10 @@ function solveDay2Part1(input) {
 		blue: 14,
 	};
 	return parseDay2Input(input).reduce((sum, game) => {
-		const isPossible = game.samples.every((sample) =>
+		const isPossible = game.samples.every(sample =>
 			// Is every color <= the max allowed value?
 			['red', 'green', 'blue'].every(
-				(color) => !sample[color] || sample[color] <= maxCounts[color],
+				color => !sample[color] || sample[color] <= maxCounts[color],
 			),
 		);
 		return isPossible ? sum + game.id : sum;
@@ -249,9 +247,9 @@ function solveDay2Part2(input) {
 			blue: 0,
 		};
 		// Update the max values
-		game.samples.forEach((sample) =>
+		game.samples.forEach(sample =>
 			['red', 'green', 'blue'].forEach(
-				(color) => (maxes[color] = Math.max(sample[color] || 0, maxes[color])),
+				color => (maxes[color] = Math.max(sample[color] || 0, maxes[color])),
 			),
 		);
 		const power = maxes.red * maxes.green * maxes.blue;
@@ -262,7 +260,7 @@ function solveDay2Part2(input) {
 
 ## Day 3: Gear Ratios
 
-For this puzzle, we have a matrix of cells, where each cell is a numeric or symbol character. We need to be able to identify numbers, which can span multiple columns. For each cell, the puzzle parts require that we be able to ask a question about the 9 *adjacent* cells.
+For this puzzle, we have a matrix of cells, where each cell is a numeric or symbol character. We need to be able to identify numbers, which can span multiple columns. For each cell, the puzzle parts require that we be able to ask a question about the 9 _adjacent_ cells.
 
 The provided example is this:
 
@@ -304,7 +302,7 @@ function parseDay3Input(input) {
 	return input
 		.trim()
 		.split(/[\r\n]+/g)
-		.map((row) => {
+		.map(row => {
 			const chars = row.split('');
 
 			/** @type {Day3Cell[]} */
@@ -347,41 +345,42 @@ function parseDay3Input(input) {
 }
 ```
 
-This parser returns an array of rows. Each row is an array of cells. For each cell, if that cell is part of a number from the grid, it refers to a *single object instance* representing that number. That way we can check to make sure we aren't doing something with a number more than once!
+This parser returns an array of rows. Each row is an array of cells. For each cell, if that cell is part of a number from the grid, it refers to a _single object instance_ representing that number. That way we can check to make sure we aren't doing something with a number more than once!
 
 The parsed data for a row looks like this:
 
 ```jsonc
 [
 	// ... (first 38 columns)
-  {
-    "col": 39,
-    "value": "3", // second digit of num.value
-    "isSymbol": false,
-    "isGear": false,
-    "num": {
-      "startCol": 38,
-      "endCol": 40,
-      "value": 835
-    }
-  },
-  {
-    "col": 40,
-    "value": "5", // third digit of num.value
-    "isSymbol": false,
-    "isGear": false,
-    "num": { // This object is the SAME ONE in the prior cell!
-      "startCol": 38,
-      "endCol": 40,
-      "value": 835
-    }
-  },
-  {
-    "col": 41,
-    "value": "*",
-    "isSymbol": true,
-    "isGear": true
-  }
+	{
+		"col": 39,
+		"value": "3", // second digit of num.value
+		"isSymbol": false,
+		"isGear": false,
+		"num": {
+			"startCol": 38,
+			"endCol": 40,
+			"value": 835,
+		},
+	},
+	{
+		"col": 40,
+		"value": "5", // third digit of num.value
+		"isSymbol": false,
+		"isGear": false,
+		"num": {
+			// This object is the SAME ONE in the prior cell!
+			"startCol": 38,
+			"endCol": 40,
+			"value": 835,
+		},
+	},
+	{
+		"col": 41,
+		"value": "*",
+		"isSymbol": true,
+		"isGear": true,
+	},
 ]
 ```
 
@@ -427,7 +426,7 @@ function solveDay3Part1(input) {
 
 ### Day 3 Part 2
 
-For this variation of the puzzle, instead of looking at cells adjacent to *numbers* we're tasked to look at cells around `*` symbols. If that symbol is adjacent to *exactly two* numbers, we multiply those two numbers together to get the *gear ratio*. The solution is the sum of all gear ratios.
+For this variation of the puzzle, instead of looking at cells adjacent to _numbers_ we're tasked to look at cells around `*` symbols. If that symbol is adjacent to _exactly two_ numbers, we multiply those two numbers together to get the _gear ratio_. The solution is the sum of all gear ratios.
 
 ```js
 /** @param {string} input */
@@ -455,7 +454,7 @@ function solveDay3Part2(input) {
 				}
 			}
 			if (foundNums.size !== 2) continue;
-			gearNums.push([...foundNums].map((num) => num.value));
+			gearNums.push([...foundNums].map(num => num.value));
 		}
 	}
 	return gearNums.reduce((sum, [a, b]) => {

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "How Notion's URLs change without breaking your links",
   "description": "When you change a Notion page's title, its URL changes. But all of your old URLs still get you to that page! Here's how Notion does it.\n",
   "editedAt": "2021-05-06T04:20:03.230Z",

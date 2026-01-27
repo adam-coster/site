@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "😴 Laziness isn't real",
   "description": "If you beat yourself up for being \"lazy\", you're probably wrong. If you think others are lazy, you're wring there, too.\n",
   "publishedAt": "2021-04-26T13:02:58.034Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "How to prevent deletion of unreachable code with VSCode's `fixAll` settings",
   "description": "Use source.fixAll.eslint instead of source.fixAll to get auto-fixes without deleting unreachable code.",
   "publishedAt": "2025-06-03T23:50:56.236Z",
@@ -25,27 +25,27 @@ Here's what's in my own `settings.json` for these code actions (note that the `"
 
 ```json
 {
-  //...
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    // ⚠️ Typescript's is the one that causes deletion of unreachable code!
-    // "source.fixAll.ts": "explicit",
-    // ⚠️ This runs all fixAll ops, including Typescript's
-    // "source.fixAll": "explicit",
+	//...
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		// ⚠️ Typescript's is the one that causes deletion of unreachable code!
+		// "source.fixAll.ts": "explicit",
+		// ⚠️ This runs all fixAll ops, including Typescript's
+		// "source.fixAll": "explicit",
 
-    // These are useful for a lot of projects if there is good uniqueness
-    // in the names of things you're importing. If not then you'll often
-    // end up auto-importing unexpected things that have the right name but
-    // are not actually what you want. I usually have these enabled, but
-    // disabled them in some workspaces when they get annoying.
-    "source.addMissingImports": "explicit",
-    "source.organizeImports": "explicit",
-    "source.removeUnusedImports": "explicit"
-  },
-  //...
+		// These are useful for a lot of projects if there is good uniqueness
+		// in the names of things you're importing. If not then you'll often
+		// end up auto-importing unexpected things that have the right name but
+		// are not actually what you want. I usually have these enabled, but
+		// disabled them in some workspaces when they get annoying.
+		"source.addMissingImports": "explicit",
+		"source.organizeImports": "explicit",
+		"source.removeUnusedImports": "explicit"
+	}
+	//...
 }
 ```
 
-If you want to keep Typescript's `fixAll` actions, you can keep `source.fixAll` or `source.fixAll.ts` enabled in VSCode but then update your Typescript config so that `compilerOptions.allowUnreachableCode` is `false`. However, if you do so then any unreachable code will not be clearly distinguished in your editor, which is dangerous since unreachable code is *probably* a bug if you aren't actively debugging something.
+If you want to keep Typescript's `fixAll` actions, you can keep `source.fixAll` or `source.fixAll.ts` enabled in VSCode but then update your Typescript config so that `compilerOptions.allowUnreachableCode` is `false`. However, if you do so then any unreachable code will not be clearly distinguished in your editor, which is dangerous since unreachable code is _probably_ a bug if you aren't actively debugging something.
 
 I've [seen claims](https://stackoverflow.com/questions/72944608/vscode-aggressively-deletes-all-code-after-unconditional-return-no-unreachable) that you can get that error detection back via eslint, but I haven't found a way to get that to work in combination with `compilerOptions.allowUnreachableCode` being set to `false`. Just using `source.fixAll.eslint` has worked well enough for me!

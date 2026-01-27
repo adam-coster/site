@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Does game piracy matter?",
   "description": "People will pirate your game in enormous numbers. The most effective way to fight it is to make it not matter. Treat piracy as a design constraint.\n",
   "publishedAt": "2021-01-28T06:00:00.000Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Cloning trick: ligation of multiple inserts",
   "description": "Stitching multiple DNA inserts together through standard cloning yields terrible results. But you can amplify the rare successes!\n",
   "editedAt": "2013-02-26T00:00:00.000Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Multi-display workstations: boost productivity without breaking your neck",
   "description": "Use multiple displays without creating an ergonomic nightmare.\n",
   "editedAt": "2021-04-19T14:52:59.560Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Narrowing, Guarding, and Asserting Typescript Types",
   "description": "If you're fighting with Typescript it's probably because of type narrowing, guarding, or asserting. What are they, and how can you stop fighting with them?",
   "publishedAt": "2025-02-02T23:48:07.810Z",

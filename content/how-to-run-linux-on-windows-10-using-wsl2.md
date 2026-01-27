@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "How to run Linux on Windows 10 using WSL2",
   "description": "Use Linux and Windows 10 at the same time, while making Windows do all the hard work. Here's how.\n",
   "editedAt": "2021-01-25T01:43:32.707Z",

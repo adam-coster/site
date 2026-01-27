@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Beware silently skipped tests in Mocha",
   "description": "Any Mocha.js tests defined within an async describe function will be silently skipped! (Don't use async functions in your describe() callbacks.)\n",
   "editedAt": "2021-03-26T22:53:16.483Z",

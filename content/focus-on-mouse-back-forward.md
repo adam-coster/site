@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Mouse Back/Forward Buttons and Element Focus",
   "description": "When navigating back/forward via the mouse buttons, hovered elements capture focus. Here's why, and how to prevent it.",
   "publishedAt": "2024-10-31T22:49:50.875Z",

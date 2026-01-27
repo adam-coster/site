@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Automating Video Game Release Notes",
   "description": "Lots of people people need to know about recent changes to a video game. But devs, QA, and players all need to know different stuff.",
   "publishedAt": "2026-01-17T22:06:13Z",

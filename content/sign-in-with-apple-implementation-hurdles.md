@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "\"Sign in with Apple\" implementation hurdles",
   "description": "Apple released its own OAuth implementation, and really wants you to use it. Their non-standard implementation presents a development challenge.\n",
   "publishedAt": "2019-10-10T18:39:44.577Z",

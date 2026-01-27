@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Setting up Windows 10 for web development: Docker, Linux, and Node.js",
   "description": "If you run your websites on Linux servers, you probably want to use Linux for development, too. Here's how to set that up on Windows 10.",
   "editedAt": "2021-01-25T01:53:57.201Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Image Correction Microscopy",
   "description": "Fluorescence microscopy images are plagued with background noise. The standard approach to correcting for this is insufficient.\n",
   "editedAt": "2021-11-28T00:00:00.000Z",

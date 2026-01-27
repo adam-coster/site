@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "The Typescript \"as const\" trick",
   "description": "Cast your Typescript values using \"as const\" to add extra tricks and safety. As of Typescript 4.5, you can do this in JSDoc comments as well.\n",
   "editedAt": "2021-01-23T23:49:11.229Z",

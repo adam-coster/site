@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Creating decent GIFs for game descriptions on Steam",
   "description": "Steam allows GIFs on store pages, but they need to be small and look decent. Here's how to use ffmpeg to create them.",
   "publishedAt": "2024-11-12T23:52:25.984Z",
@@ -48,7 +48,6 @@ ffmpeg -y -i source-video_steam.mp4 -i palette.png -filter_complex "[0:v]fps=15[
 ```
 
 That's pretty tedious, error-prone, and gives zero feedback during the process. So I put together a little app to slap a GUI in front of those commands, which makes it easy to crop, trim, and adjust quality settings with clear visual feedback. All the GIFs you make accumulate in the UI, so you can compare their quality and size side-by-side to pick the best one. Check it out [on GitHub](https://github.com/bscotch/steam-gifs).
-
 
 **UPDATE (2024/11/13):** For even more ffmpeg options, see Alan Smith's ["ffmpeg GIF Maker Command (2023 Edition)"](https://www.alanwsmith.com/en/2x/jk/jc/yl/).
 

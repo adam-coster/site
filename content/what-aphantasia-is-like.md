@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "What having Aphantasia is like",
   "description": "Imagine not be being able to imagine--uh, wait. Imagine an apple that you can't see. Hm. Maybe that doesn't help...",
   "publishedAt": "2026-01-17T22:47:23.092Z",

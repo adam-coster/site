@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Statically host your Electron app updates: No server required!",
   "description": "The Electron docs describe autoupdate servers you can use for your app. But you can also get by with a static host.",
   "publishedAt": "2023-08-27T21:25:26.155Z",
@@ -18,7 +18,7 @@ One of the great features of Electron is its built-in support for [automatic app
 1. Codesign your app and use Electron's update service with GitHub Releases; or
 2. Host your own update server.
 
-*Blech.*
+_Blech._
 
 But! It turns out that there is a secret 3rd option: you can use statically-hosted files to manage your automatic updates!
 
@@ -30,28 +30,27 @@ The rest of this post assumes that you're already making Windows builds for your
 
 The following is a stripped-down sample of an Electron Forge config file for Windows, using Squirrel as the maker, for an application called "MyApp":
 
-
 ```js
 /** @file forge.config.js */
 
 /** @type {import('@electron-forge/shared-types').ForgeConfigMaker} */
 const squirrelMaker = {
-  name: '@electron-forge/maker-squirrel',
-  /** @type {import('@electron-forge/maker-squirrel').MakerSquirrelConfig } */
-  config: {
-    exe: 'MyApp.exe',
-    setupExe: 'MyAppSetup.exe',
-  },
-  /** @type {import('electron-packager').OfficialPlatform[]} */
-  platforms: ['win32'],
+	name: '@electron-forge/maker-squirrel',
+	/** @type {import('@electron-forge/maker-squirrel').MakerSquirrelConfig } */
+	config: {
+		exe: 'MyApp.exe',
+		setupExe: 'MyAppSetup.exe',
+	},
+	/** @type {import('electron-packager').OfficialPlatform[]} */
+	platforms: ['win32'],
 };
 
 /** @type {import('@electron-forge/shared-types').ForgeConfig} */
 module.exports = {
-  packagerConfig: {
-    name: 'MyApp',
-  },
-  makers: [squirrelMaker],
+	packagerConfig: {
+		name: 'MyApp',
+	},
+	makers: [squirrelMaker],
 };
 ```
 
@@ -73,17 +72,20 @@ If your `baseUrl` is `https://example.com/updates`, you'd upload those output fi
 import { autoUpdater } from 'electron';
 
 autoUpdater.setFeedURL({
-  url: baseUrl, // e.g. "https://example.com/updates"
-  headers: {
-    'Cache-Control': 'no-cache', // Could add more subtlety here...
-  },
+	url: baseUrl, // e.g. "https://example.com/updates"
+	headers: {
+		'Cache-Control': 'no-cache', // Could add more subtlety here...
+	},
 });
 
 // You probably want fancier logic than this, but this would get the job done:
 autoUpdater.checkForUpdates(); // Check on startup
-setInterval(() => {
-  autoUpdater.checkForUpdates();
-}, 1000 * 60 * 60); // Check for updates every hour
+setInterval(
+	() => {
+		autoUpdater.checkForUpdates();
+	},
+	1000 * 60 * 60,
+); // Check for updates every hour
 ```
 
 ## Hosting with GitHub Releases
@@ -102,4 +104,4 @@ gh release create \
 
 Then your `baseUrl` would be `https://github.com/$OWNER/$REPO/releases/latest/download`.
 
-> **📝 Note:** If you use GitHub releases, you'll need *every release* to be for the same application, since GitHub doesn't provide any way to use a URL to filter releases by name/tag/etc.
+> **📝 Note:** If you use GitHub releases, you'll need _every release_ to be for the same application, since GitHub doesn't provide any way to use a URL to filter releases by name/tag/etc.

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Learn how binary encoding works",
   "description": "\"Binary encoding\" sounds complicated. It's more approachable than you think, and understanding it unlocks a wealth of knowledge and tools.\n",
   "editedAt": "2021-01-23T23:59:16.323Z",

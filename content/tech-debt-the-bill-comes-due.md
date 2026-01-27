@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Tech Debt: The Bill Comes Due",
   "description": "What is technical debt, and how do you decide when to pay it down? Here are the lessons I learned from shoring up a legacy project.\n",
   "publishedAt": "2020-11-06T17:06:19.966Z",

@@ -1,0 +1,47 @@
+
+
+<section id="c3c693681-aeda-43c9-a174-c705de2a5a12">
+	<header>
+		<h1>What are you looking for?<h1>
+		<p>
+			This site takes a searchable-pile approach to surfacing content, rather than an organized and structured approach.
+			If something is on the site, you can find it here!
+		</p>
+  </header>
+  <search>
+    <input type="search" placeholder="Your query goes here...">
+  </search>
+</section>
+
+<style>
+  #c3c693681-aeda-43c9-a174-c705de2a5a1 {
+    
+  }
+</style>
+
+<script type="module">
+  import {search} from '/index.search.js';
+  const searchInputEl = document.getElementById('c3c693681-aeda-43c9-a174-c705de2a5a12');
+
+  // On load, use whatever search term came with the URL
+  /** @type {string} */
+  let query = new URL(location.href).searchParams.get('search') || '';
+  /** Search index(lazy loaded)
+   * @type {any} */
+  let index = undefined;
+
+  updateListing(query);
+
+  searchInputEl.oninput = (e)=>{
+    const query = e.target.value || '';
+    updateListing(query);
+  }
+
+  /** @param {string} qs */
+  function updateListing(qs){
+    if(qs){
+      // Then we gotta import the search index!
+
+    }
+  }
+</script>

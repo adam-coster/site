@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Live Dev: How to set up a Node project with Typescript",
   "description": "Modern web development requires a lot of setup. I'll walk you through it, diving deep into the details along the way.\n",
   "editedAt": "2021-05-14T20:02:42.962Z",

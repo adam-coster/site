@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "How email previews work",
   "description": "Email clients show the first line of an email before you open it. Here's how that works, and how you can hack it.\n",
   "editedAt": "2021-03-23T15:47:23.601Z",

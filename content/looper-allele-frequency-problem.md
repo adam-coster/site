@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Allele frequency problem in \"Looper\"",
   "description": "Time travel is always a nonsense generator, but \"Looper\" kicks it up a notch with impossibly rapid evolution.\n",
   "publishedAt": "2013-01-12T07:55:00.402Z",

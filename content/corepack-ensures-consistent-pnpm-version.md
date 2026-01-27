@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Use corepack to ensure consistent pnpm/yarn versions",
   "description": "Avoid works-on-my-machine errors across environments by using corepack to ensure the same version of pnpm or yarn is used everywhere (even in monorepos).\n",
   "publishedAt": "2022-10-09T19:06:19.598Z",

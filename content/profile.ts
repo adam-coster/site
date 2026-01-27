@@ -140,3 +140,5 @@ export const profile: ProfilePageSchema = {
 	'@type': 'ProfilePage',
 	mainEntity: me,
 };
+
+export const page = '<h1>WORK IN PROGRESS</h1>';

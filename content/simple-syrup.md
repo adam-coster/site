@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Simple Syrup",
   "description": "Add flavor and sweetness to cocktails, mocktails, and anything else.",
   "publishedAt": "2024-04-21T19:54:02.293Z",
@@ -39,7 +39,7 @@ For a high-intensity flavor, you can juice some ginger and add the juice to the 
 
 ### Cardamom Simple Syrup
 
-I *love* the smell of cardamom. I can't have enough of it. I use it as a simple syrup flavor by crushing a bunch of cardamom pods, adding them to a tea infuser, and dropping the infuser into the simple syrup while it's still hot.
+I _love_ the smell of cardamom. I can't have enough of it. I use it as a simple syrup flavor by crushing a bunch of cardamom pods, adding them to a tea infuser, and dropping the infuser into the simple syrup while it's still hot.
 
 I leave the infuser in the syrup until it's all used up, so the cardamom scent gets stronger the whole time.
 
@@ -47,6 +47,6 @@ The more cardamom you add the stronger the flavor, of course. I add as much as w
 
 ### Rosemary Simple Syrup
 
-Like cardamom, rosemary also smells *amazing*. It works surprisingly well in combination with lots of other flavors, even though I typically think of it as something for savory food dishes.
+Like cardamom, rosemary also smells _amazing_. It works surprisingly well in combination with lots of other flavors, even though I typically think of it as something for savory food dishes.
 
 Rosemary simple syrup is a little finicky compared to the other two, since it'll get bitter if you steep it too long. I toss lots of fresh rosemary into the pot while I'm dissolving my simple syrup, leave it in while it's cooling, and then filter out the rosemary for storage by pouring through a strainer.

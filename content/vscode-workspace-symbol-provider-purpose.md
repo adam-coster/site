@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "VSCode's Workspace Symbol Provider: Why and how to use it",
   "description": "VSCode's Workspace Symbol Provider provides a great way to make symbols searchable in your code base. But it's not just limited to code symbols!",
   "publishedAt": "2023-12-09T20:15:31.365Z",

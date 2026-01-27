@@ -1,5 +1,6 @@
+import { readContentFile } from '../build.utilities.ts';
 import type { WebSiteSchema } from '../schemas/microdata.ts';
-import { html } from '../utilities/html.ts';
+import { populateHtmlTemplate, type PageMeta } from '../templates/page.ts';
 import { asCanonicalUrl } from '../utilities/urls.ts';
 import { me } from './profile.ts';
 
@@ -25,4 +26,13 @@ const siteData: WebSiteSchema = {
 	},
 };
 
-let page = html``;
+const meta: PageMeta = {
+	canonical: '/',
+	title: 'The Archives of Adam Coster',
+	description: 'Writings and miscellany',
+	content: await readContentFile('index.content.html'),
+	slug: '',
+	ldjsons: [siteData],
+};
+
+export const page = await populateHtmlTemplate(meta);

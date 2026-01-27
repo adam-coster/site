@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "HTTP Guide",
   "description": "HTTP makes the Internet go round. This guide provides a high-level, practical overview of how it works.",
   "publishedAt": "2023-07-03T20:49:36.030Z",
@@ -26,14 +26,14 @@ There are lots of good sources out there for [more technical details](https://de
 
 There's no way around some of the HTTP jargon since you'll see them out in the wild and need to know what they mean. Two of the biggies are "Client" and "Server" and their near-synonyms.
 
-- **Client**: An entity that wants to talk to some other entity (the Server), and thus initiates "requests" to it. The word "request" is perfect since Clients don't get to make *demands*. They ask politely, and the Server decides what happens. "Client-side" is an oft-used adjective to describe things happening on the Client. Examples of clients: browsers, games, desktop apps that use a web service, apps on your phone, etc.
+- **Client**: An entity that wants to talk to some other entity (the Server), and thus initiates "requests" to it. The word "request" is perfect since Clients don't get to make _demands_. They ask politely, and the Server decides what happens. "Client-side" is an oft-used adjective to describe things happening on the Client. Examples of clients: browsers, games, desktop apps that use a web service, apps on your phone, etc.
 - **Server**: The entity that a Client makes requests to, and that might send responses back (if it feels like it). HTTP servers are software applications that know how to listen for, parse, and respond to HTTP requests from clients. "Server-side" is an oft-used adjective to describe things happening on the server.
-- **Local**: You'll sometimes see "local" or "locally" used as a synonym for "client". Seen in phrases like, "the server doesn't process everything for you, you'll have to finish up *locally.*"
-- **Remote**: You'll sometimes see "remote" (meaning "distant", as in "remote control") used as a synonym for "server". This creates symmetry with "local" referring to the client, and makes sense since *usually* the servers we care about are *over there somewhere* (remote) while the clients we care about are *right here in front of us* (local).
+- **Local**: You'll sometimes see "local" or "locally" used as a synonym for "client". Seen in phrases like, "the server doesn't process everything for you, you'll have to finish up _locally._"
+- **Remote**: You'll sometimes see "remote" (meaning "distant", as in "remote control") used as a synonym for "server". This creates symmetry with "local" referring to the client, and makes sense since _usually_ the servers we care about are _over there somewhere_ (remote) while the clients we care about are _right here in front of us_ (local).
 
-The directionality here is important: HTTP requests *are initiated by the client* and the server *sends responses* back. Servers do not send requests to Clients (by definition). Not over HTTP, anyway.
+The directionality here is important: HTTP requests _are initiated by the client_ and the server _sends responses_ back. Servers do not send requests to Clients (by definition). Not over HTTP, anyway.
 
-> ⚠ These terms are overloaded so it can get confusing. People often use "the client" to refer to the *computer* or even the *person* initiating the HTTP request, even though the real client is the *application* running on that computer. Similarly, you'll often see "the server" used to refer to the *computer* instead of the *server application* running on that computer. To add even more confusion, you can run client and server applications *on the same machine* -- in that case the terms "local" and "remote" can still be used but now make less obvious sense.
+> ⚠ These terms are overloaded so it can get confusing. People often use "the client" to refer to the _computer_ or even the _person_ initiating the HTTP request, even though the real client is the _application_ running on that computer. Similarly, you'll often see "the server" used to refer to the _computer_ instead of the _server application_ running on that computer. To add even more confusion, you can run client and server applications _on the same machine_ -- in that case the terms "local" and "remote" can still be used but now make less obvious sense.
 
 > ⚠ Client-Server relationships exist for all kinds of other "protocols" (ways of sending and receiving data over the Internet, one of which being HTTP), but here we're just talking about HTTP.
 
@@ -48,7 +48,6 @@ HTTP is all about "Client Requests" and subsequent "Server Responses". Skipping 
 5. Server sends the Response to the Client. (Server may instead choose to not respond at all!)
 6. Client receives the Response and parses its contents
 7. Client performs some task based on the Response contents
-
 
 For example, let's take an imagined Weather App (the Client) and its Server:
 
@@ -79,15 +78,15 @@ The biggest difference between requests and responses is that first line, the re
 
 An "HTTP Method" is one of a handful of keywords (like `POST` or `GET`) that tell the server what kind of action you are trying to take. When describing a request, people often include the method. So they'll say things like "Send a GET Request to `example.com/rad-webpage`".
 
-While there are [standards and best-practices](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) for which Method to use for any given purpose, in the real world it's sorta all over the place. There is no Internet Police to enforce how HTTP Methods are used, and there are all kinds of reasons why any given website might use them in a bespoke way. (And not always *good* reasons!)
+While there are [standards and best-practices](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) for which Method to use for any given purpose, in the real world it's sorta all over the place. There is no Internet Police to enforce how HTTP Methods are used, and there are all kinds of reasons why any given website might use them in a bespoke way. (And not always _good_ reasons!)
 
-I've summarized the most common Methods below, including what they're *supposed* to be for versus how they're *actually used*.
+I've summarized the most common Methods below, including what they're _supposed_ to be for versus how they're _actually used_.
 
-- `GET` is for, well, *getting* things. It's the method your browser uses when you click a link or type a URL into the address bar. GET requests are not *supposed to* include a Body (but the Internet is a silly place). If you want to fetch a webpage, download an image, or "get" anything from the web, you'll probably use a GET request. In practice, you'll sometimes find GET requests used to *change* things on the server as well — in those cases the content of the URL should give you a hint about what will happen when you send the request.
-- `POST` is for *posting* (uploading) things. When you fill out a form on a website and hit that submit button your browser sends a POST request to the server with all the form data. POSTs are supposed to be for *adding new things* to a server. In other words, if you sent a POST to upload an image twice in a row, there should be two copies of that image uploaded to the server now. Historically, GET and POST were the only HTTP methods supported out of the box by browsers, so POST tends to get used for all kinds of purposes. It's pretty common to find services that *only* use GET and POST requests.
+- `GET` is for, well, _getting_ things. It's the method your browser uses when you click a link or type a URL into the address bar. GET requests are not _supposed to_ include a Body (but the Internet is a silly place). If you want to fetch a webpage, download an image, or "get" anything from the web, you'll probably use a GET request. In practice, you'll sometimes find GET requests used to _change_ things on the server as well — in those cases the content of the URL should give you a hint about what will happen when you send the request.
+- `POST` is for _posting_ (uploading) things. When you fill out a form on a website and hit that submit button your browser sends a POST request to the server with all the form data. POSTs are supposed to be for _adding new things_ to a server. In other words, if you sent a POST to upload an image twice in a row, there should be two copies of that image uploaded to the server now. Historically, GET and POST were the only HTTP methods supported out of the box by browsers, so POST tends to get used for all kinds of purposes. It's pretty common to find services that _only_ use GET and POST requests.
 - `DELETE` is for, you guessed it, deleting things. DELETE requests are not supposed to contain a body — the URL is supposed to point to the thing you want to delete.
 - `PATCH` is for modifying a subset of something. For example, if you want to update the author of a blog post, you might need to send a PATCH request indicating that fact. In practice, people often use `PUT` or `POST` for this purpose instead.
-- `PUT` is for *completely replacing* something that already exists. It's like `PATCH`, except you replace the whole thing instead of modifying part of it. Since that's a subtle distinction, and because the world is chaos, you'll often find `PATCH` or `POST` used instead.
+- `PUT` is for _completely replacing_ something that already exists. It's like `PATCH`, except you replace the whole thing instead of modifying part of it. Since that's a subtle distinction, and because the world is chaos, you'll often find `PATCH` or `POST` used instead.
 
 ### HTTP Status Codes
 
@@ -95,24 +94,23 @@ An "HTTP Status Code" is intended to give a rough idea of why a request succeede
 
 As with HTTP Methods, there are [standards and best-practices](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) for which Status Codes to use under any given scenario. But, also as with Methods, in the real world it's a lot more chaotic than that. I've summarized the most common status codes below, and what you might see out in the wild:
 
-- `200` OK. This is the server giving you a thumbs-up and saying that it understood what you were trying to do. So if you got a 200 then you got what you wanted, right? NOPE! There's nuance here, on top of the fact that the person who wrote the server logic might have just chosen to send a confusing status code. Some servers *only* reply with 200 codes and provide details in the body! An example of the nuance is: what if your request was a search, and there were no results? The server could send back a 200 with an empty list of results, to indicate that the search ran without error but found nothing. But it could also send a 404 status without any results to indicate the same thing.
+- `200` OK. This is the server giving you a thumbs-up and saying that it understood what you were trying to do. So if you got a 200 then you got what you wanted, right? NOPE! There's nuance here, on top of the fact that the person who wrote the server logic might have just chosen to send a confusing status code. Some servers _only_ reply with 200 codes and provide details in the body! An example of the nuance is: what if your request was a search, and there were no results? The server could send back a 200 with an empty list of results, to indicate that the search ran without error but found nothing. But it could also send a 404 status without any results to indicate the same thing.
 - `201` Created. This is supposed to mean that you uploaded something new (like an image) and that thing now exists. You'll often see 200 used instead.
-- `204` No Comment. A 204 indicates that the server did what you asked, but doesn't have anything to send you back (no response body). You'll often see 200 used instead, and even see 204s that *do* include a body!
+- `204` No Comment. A 204 indicates that the server did what you asked, but doesn't have anything to send you back (no response body). You'll often see 200 used instead, and even see 204s that _do_ include a body!
 - `2XX` There are other 200-level codes that mean various things, but they aren't very common. You can usually assume that things happened as intended if you get a 200-299 status code.
 - `3XX` Are various forms of "Go look over there instead!" (a.k.a. "redirects"). You'll get these if something's URL changed but the server knows about the old URL, or if the client already has the thing it's trying to get and that thing hasn't changed on the server.
 - `400` Whoopsy! All `4XX` status are some form of "You messed something up, you silly client!" 400 is the most generic one. It's often used as a catch-all for every kind of client error, so you'll typically need to look for an explanation in the response body or headers.
 - `401` Bad Credentials. You should only get this if your request included access credentials (like a password) but they are somehow invalid (expired or malformed, typically), or if you are trying to connect to a password-protected server without a server password.
-- `403` Access Denied. This is the server flipping you the bird and saying, "Nope, not today, Satan!" You'll get this for protected actions if you have insufficient permission. It's similar to 401, and sometimes used instead, but is supposed to mean "There's nothing wrong with your credentials (or lack thereof) but *you* are not allowed to do this thing you're trying to do."
-- `404` Not Found. The old classic. You've probably heard of it. It's supposed to mean that the action you wanted to take on a thing is impossible because the thing doesn't exist. It is also used for the more subtle, "That thing doesn't exist *as far as you're concerned*". For example, if I request something that *does* exist, but my user isn't allowed to access that thing, then I could either get a 403 ("you aren't allowed to see that") or a 404 ("as far as you're concerned, that thing doesn't exist").
+- `403` Access Denied. This is the server flipping you the bird and saying, "Nope, not today, Satan!" You'll get this for protected actions if you have insufficient permission. It's similar to 401, and sometimes used instead, but is supposed to mean "There's nothing wrong with your credentials (or lack thereof) but _you_ are not allowed to do this thing you're trying to do."
+- `404` Not Found. The old classic. You've probably heard of it. It's supposed to mean that the action you wanted to take on a thing is impossible because the thing doesn't exist. It is also used for the more subtle, "That thing doesn't exist _as far as you're concerned_". For example, if I request something that _does_ exist, but my user isn't allowed to access that thing, then I could either get a 403 ("you aren't allowed to see that") or a 404 ("as far as you're concerned, that thing doesn't exist").
 
 ### Bringing it all together
 
-In practice, you *will not be sending or receiving raw requests*. You'll be using tools that end up doing that for you, and that abstract away the details and make it easier for you to add all the information required for sending a request or processing a response. Still, it's useful to see what the raw stuff looks like because it's simpler than you'd expect and it will help you understand what your tools are doing.
+In practice, you _will not be sending or receiving raw requests_. You'll be using tools that end up doing that for you, and that abstract away the details and make it easier for you to add all the information required for sending a request or processing a response. Still, it's useful to see what the raw stuff looks like because it's simpler than you'd expect and it will help you understand what your tools are doing.
 
 Let's look at some (fake) examples of raw requests and responses that make use of all the stuff we talked about above. We'll use the Weather App and its Server from before:
 
 - The user boots up the App, which checks to see if the user has purchased any IAPs by requesting that info from the App's Server (via the URL `http://fake-weather-app.example.com/purchases`). The **request** might look like this:
-    
   ```
   GET /purchases HTTP/1.1
   Host: fake-weather-app.example.com
@@ -121,16 +119,17 @@ Let's look at some (fake) examples of raw requests and responses that make use o
   Agent: Fake Weather App/v11.0.23 Android/Google Play
   ```
 - The Server receives the request, checks the Authentication to make sure it's legit, adds info to its logs, and then finally checks its database for purchases made by this user. It doesn't find any! It then sends a **response** that might look like this ([learn about JSON](./json-guide)):
-    
+
   ```
   HTTP/1.1 200 OK
   Content-Type: application/json; utf-8
-  
+
   {"purchases":[]}
   ```
+
 - Thus ends the first request-response cycle! The App sees that the user hasn't made any purchases, and then prompts them to visit the in-app store to see the options. The users does this, and is intrigued 🤔
 - The App user purchases the "In-Depth Forecast" IAP bundle, which eventually results in that purchase's info being POSTed to the App's Server with the following **request**:
-    
+
   ```
   POST /purchases HTTP/1.1
   Host: fake-weather-app.example.com
@@ -138,7 +137,7 @@ Let's look at some (fake) examples of raw requests and responses that make use o
   Accept: application/json
   Authentication: Basic SomeCredentialsProvingUserIdentity
   Agent: Fake Weather App/v11.0.23 Android/Google Play
-  
+
   {
     "new_purchases": [
       {
@@ -149,12 +148,13 @@ Let's look at some (fake) examples of raw requests and responses that make use o
     ]
   }
   ```
+
 - The App's Server receives this, checks the token, adds this purchase to the database, and **responds**:
-    
+
   ```
   HTTP/1.1 201 OK
   Content-Type: application/json; utf-8
-  
+
   {
     "purchases":[
       {
@@ -163,7 +163,8 @@ Let's look at some (fake) examples of raw requests and responses that make use o
     ]
   }
   ```
-- The App receives this, parses it, and since it *trusts its Server* it flips a switch for that bundle so that now every time it checks to see if the user owns that bundle, the answer is *yes*.
+
+- The App receives this, parses it, and since it _trusts its Server_ it flips a switch for that bundle so that now every time it checks to see if the user owns that bundle, the answer is _yes_.
 
 In real life, you'll be using tools with varying complexity and features, like libraries in your favorite programming language or applications built specifically for sending raw requests and receiving raw responses.
 

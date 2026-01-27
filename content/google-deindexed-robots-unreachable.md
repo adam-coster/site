@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "robots.txt unreachable: Google search removed my site!",
   "description": "I always thought that the absence of a robots.txt file implied a web crawler could do what it liked. Apparently not! Not with a 500 status code, anyway.",
   "publishedAt": "2026-01-17T23:43:24.796Z",

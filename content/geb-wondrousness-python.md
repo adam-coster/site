@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "\"Gödel, Escher, Bach\": Wondrousness in Python",
   "description": "In GEB the Tortoise and Achilles describe a number property they call \"Wondrousness\". It creates a fascinating graph.\n",
   "publishedAt": "2011-01-15T00:00:00.000Z",

@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Make coding a joy with these core VSCode extensions and settings",
   "description": "You can only be as good as your tools. Here are the core VSCode extensions and settings that I use to make web development a blast.\n",
   "editedAt": "2021-01-25T01:47:38.531Z",

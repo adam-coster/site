@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "Pasted stuff from Google Docs is always BOLD! WHY!?",
   "description": "Google Docs makes everything you copy bold. Why? Who knows. Let's talk about how copy/paste works and how to fix this madness with JavaScript.",
   "publishedAt": "2025-05-01T00:17:01.027Z",

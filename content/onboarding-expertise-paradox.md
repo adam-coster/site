@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "The Onboarding vs. Expertise Paradox",
   "description": "You can only know which long-term decision to make long after you've already made it.",
   "publishedAt": "2026-01-17T22:31:06Z",

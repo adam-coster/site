@@ -1,6 +1,6 @@
 ---json
 {
-  "$schema": "../schemas/article.schema.json",
+  "kind": "article",
   "title": "JavaScript regex for semver strings",
   "description": "A comprehensive JavaScript regular expression for matching semver strings, plus a simple semver parser.",
   "publishedAt": "2023-09-18T16:34:56.039Z",
@@ -19,10 +19,12 @@ Here's the official regex with minimal edits to make it JavaScript compatible:
 
 ```js
 /** Regex matching the official semver spec, with named capture groups. */
-const semverPattern = /^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+const semverPattern =
+	/^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
 
 /** Pattern matching the official semver spec, with named capture groups, that can be used as a RegExp source. */
-const semverPatternString = '^(?<major>0|[1-9]\\d*)\\.(?<minor>0|[1-9]\\d*)\\.(?<patch>0|[1-9]\\d*)(?:-(?<prerelease>(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$'
+const semverPatternString =
+	'^(?<major>0|[1-9]\\d*)\\.(?<minor>0|[1-9]\\d*)\\.(?<patch>0|[1-9]\\d*)(?:-(?<prerelease>(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$';
 ```
 
 See it in action: [https://regex101.com/r/M4Un5m/1](https://regex101.com/r/M4Un5m/1)
@@ -30,7 +32,8 @@ See it in action: [https://regex101.com/r/M4Un5m/1](https://regex101.com/r/M4Un5
 And here's a semver parser that uses the above regex:
 
 ```js
-const semverPattern = /^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+const semverPattern =
+	/^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
 
 /**
  * Get the components of a semver string.
@@ -38,30 +41,26 @@ const semverPattern = /^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[
  * @returns {{ major: number, minor: number, patch: number, prerelease: string[], buildmetadata: string[] }}}
  */
 function parseSemver(semverString) {
-  const match = semverPattern.exec(semverString);
-  if (!match) return null;
-  const { major, minor, patch, prerelease, buildmetadata } = match.groups;
-  return {
-    major: +(major),
-    minor: +(minor),
-    patch: +(patch),
-    prerelease: prerelease
-      ? splitPrereleaseString(prerelease)
-      : [],
-    buildmetadata: buildmetadata
-      ? splitPrereleaseString(buildmetadata)
-      : [],
-  }
+	const match = semverPattern.exec(semverString);
+	if (!match) return null;
+	const { major, minor, patch, prerelease, buildmetadata } = match.groups;
+	return {
+		major: +major,
+		minor: +minor,
+		patch: +patch,
+		prerelease: prerelease ? splitPrereleaseString(prerelease) : [],
+		buildmetadata: buildmetadata ? splitPrereleaseString(buildmetadata) : [],
+	};
 }
 
 /**
  * @returns {(string | number)[]}
  */
 function splitPrereleaseString(prereleaseString) {
-  return prereleaseString.split('.').map((str) => {
-      const num = +str;
-      return Number.isNaN(num) ? str : num;
-    });
+	return prereleaseString.split('.').map(str => {
+		const num = +str;
+		return Number.isNaN(num) ? str : num;
+	});
 }
 
 // Test cases
