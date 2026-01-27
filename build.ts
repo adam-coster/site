@@ -80,7 +80,9 @@ for (const file of sourceFiles) {
 if (unusedSourceFiles.size > 0) {
 	console.error('Some files not used during build:');
 	console.error(unusedSourceFiles.keys());
-	throw new Error();
+	if (process.env.CI) {
+		throw new Error('All files must be used during build!');
+	}
 }
 
 // Search index.

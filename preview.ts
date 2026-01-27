@@ -1,3 +1,6 @@
+// Build everything
+import './build.ts';
+//
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import {
@@ -23,4 +26,6 @@ app.get('/:slug?', async c => {
 	return c.notFound();
 });
 
-serve({ fetch: app.fetch, port: 3000 });
+const port = 3000;
+const server = serve({ fetch: app.fetch, port });
+console.log('Running:', `http://localhost:${port}`);
