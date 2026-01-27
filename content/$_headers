@@ -1,9 +1,8 @@
-/static/feeds/blog.rss
+/*.rss
   Content-Type: application/rss+xml
 
-/static/feeds/blog.json
+/feed.json
   Content-Type: application/feed+json
 
-/static/feeds/blog.atom
+/*.atom
   Content-Type: application/atom+xml
-

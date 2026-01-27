@@ -3,3 +3,6 @@
 /about /profile
 /tools /
 /tools/:slug /:slug
+/feeds/blog.rss /feed.rss
+/feeds/blog.atom /feed.atom
+/feeds/blog.json /feed.json
