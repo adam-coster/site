@@ -1,4 +1,5 @@
 import type { WebSiteSchema } from '../schemas/microdata.ts';
+import { html } from '../utilities/html.ts';
 import { asCanonicalUrl } from '../utilities/urls.ts';
 import { me } from './profile.ts';
 
@@ -7,7 +8,7 @@ import { me } from './profile.ts';
  * to populate a functional searchbox
  * @see https://developers.google.com/search/docs/advanced/structured-data/sitelinks-searchbox
  */
-export const site: WebSiteSchema = {
+const siteData: WebSiteSchema = {
 	'@type': 'WebSite',
 	name: 'Adam Coster',
 	alternateName: ['adamcoster.com', 'adam-coster'],
@@ -23,3 +24,5 @@ export const site: WebSiteSchema = {
 		'query-input': 'required name=search_term_string',
 	},
 };
+
+let page = html``;
