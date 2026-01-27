@@ -81,6 +81,10 @@ export async function readTextFile(path: string): Promise<string> {
 	return await fsp.readFile(path, 'utf8');
 }
 
+export async function readContentFile(name: string): Promise<string> {
+	return await fsp.readFile(`content/${name}`, 'utf8');
+}
+
 export async function readJsonFile(path: string): Promise<unknown> {
 	return JSON.parse(await fsp.readFile(path, 'utf8'));
 }

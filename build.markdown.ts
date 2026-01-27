@@ -1,6 +1,6 @@
 import { ok } from 'node:assert';
 import { Marked } from 'marked';
-import { articleSchema } from './schemas/article.schema.ts';
+import { articleMetadataSchema } from './schemas/content.metadata.ts';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
@@ -28,7 +28,7 @@ export function processMarkdownPage(slug: string, md: string) {
 		return {
 			html,
 			body,
-			meta: articleSchema.parse(meta),
+			meta: articleMetadataSchema.parse(meta),
 		};
 	} catch (err) {
 		console.error(slug);

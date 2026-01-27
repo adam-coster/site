@@ -6,11 +6,12 @@ import {
 	writeJson,
 } from './build.utilities.ts';
 import { copyFile, writeFile } from 'node:fs/promises';
-import { articleSchema } from './schemas/article.schema.ts';
 import { processMarkdownPage } from './build.markdown.ts';
-import { formatHtml } from './build.html.ts';
 import lunr from 'lunr';
-import { createArticleMicrodata, ldJsonify } from './schemas/microdata.ts';
+import { createArticleMicrodata } from './schemas/microdata.ts';
+import { populateHtmlTemplate } from './templates/page.ts';
+import { ok } from 'node:assert';
+import type { SiteContent } from './schemas/content.metadata.ts';
 
 const outDir = await ensureDir('dist', true);
 const sourceDir = 'content';
@@ -23,12 +24,7 @@ const searchDocs: {
 	tags: string[];
 	body: string;
 }[] = [];
-
-// Keep the schema file up to date for re
-await writeFile(
-	'./schemas/article.schema.json',
-	JSON.stringify(articleSchema.toJSONSchema(), null, 2),
-);
+const siteContent: SiteContent = [];
 
 for (const file of sourceFiles) {
 	if (file.kind === 'static') {
@@ -36,7 +32,7 @@ for (const file of sourceFiles) {
 		await copyFile(file.path, `${outDir}/${file.name.slice(1)}`);
 		unusedSourceFiles.delete(file.name);
 		continue;
-	} else if (['jpg', 'png', 'gif', 'jpeg'].includes(file.type)) {
+	} else if (['jpg', 'png', 'gif', 'jpeg', 'js', 'json'].includes(file.type)) {
 		await copyFile(file.path, `${outDir}/${file.name}`);
 		unusedSourceFiles.delete(file.name);
 		continue;
@@ -56,24 +52,48 @@ for (const file of sourceFiles) {
 		);
 	}
 
+	let html: string | undefined;
 	if (file.type === 'md' && !file.id) {
 		// Then this is a markdown page!
 		const md = await readTextFile(file.path);
 		const content = processMarkdownPage(file.slug, md);
 		microdatas.push(createArticleMicrodata(content.meta));
-		const microdataString = ldJsonify(microdatas);
-		// TODO: Needs header, footer, meta, JSONLD, etc
-		let html = await formatHtml(
-			`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${content.meta.title}</title>${microdataString}</head><body>${content.html}</body></html>`,
-		);
-		const outFile = `${await ensureDir(`${outDir}/${file.slug}`)}/index.html`;
-		await writeFile(outFile, html);
+		html = await populateHtmlTemplate({
+			title: content.meta.title,
+			slug: file.slug,
+			description: content.meta.description,
+			canonical: content.meta.canonical,
+			content: content.html,
+			ldjsons: microdatas,
+		});
+		unusedSourceFiles.delete(file.name);
 		searchDocs.push({
 			slug: file.slug,
 			...content.meta,
 			body: content.body,
 		});
+		siteContent.push({
+			...content.meta,
+			path: `/${file.slug}`,
+		});
+	} else if (file.type === 'ts' && !file.id) {
+		const { page } = await import(`./content/${file.name}`);
+		ok(
+			typeof page === 'string',
+			`Unexpected type of page import, got ${typeof page} `,
+		);
+		html = page;
 		unusedSourceFiles.delete(file.name);
+		// TODO: Search content?
+		// TODO: Metadata?
+	}
+
+	if (html) {
+		const outFile =
+			file.slug === 'index'
+				? `${outDir}/index.html`
+				: `${await ensureDir(`${outDir}/${file.slug}`)}/index.html`;
+		await writeFile(outFile, html);
 	}
 }
 
@@ -97,3 +117,4 @@ const searchIndex = lunr(function () {
 
 // Note: should be tagged for caching
 await writeJson(`${outDir}/search.json`, searchIndex);
+await writeJson(`${outDir}/index.json`, siteContent);

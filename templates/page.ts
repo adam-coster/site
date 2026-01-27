@@ -1,41 +1,46 @@
 import { readTextFile } from '../build.utilities.ts';
+import { ldJsonify } from '../schemas/microdata.ts';
 import { escapeHtml, html } from '../utilities/html.ts';
 import { asCanonicalUrl } from '../utilities/urls.ts';
 
 const footer = await readTextFile('./templates/footer.html');
 
-export function populateHtmlTemplate(meta: {
+export interface PageMeta {
 	title: string;
+	slug: string;
 	description: string;
-	canonical: string;
+	/** HTML content for the page, which will go inside a <main> element before the site header and footer. */
+	content: string;
+	ldjsons?: any[];
 	social?: {
 		title?: string;
 		description?: string;
 		image?: string;
 	};
-	/** HTML content for the page, which will go inside a <main> element before the site header and footer. */
-	content: string;
-}) {
+	canonical?: string | null;
+}
+
+export async function populateHtmlTemplate(meta: PageMeta): Promise<string> {
 	meta = { ...meta };
-	if (!meta.canonical.startsWith('https://')) {
-		meta.canonical = asCanonicalUrl(meta.canonical);
-	}
+	const canonical = asCanonicalUrl(meta.canonical || meta.slug);
 	if (meta.social?.image && !meta.social.image.startsWith('https://')) {
 		meta.social.image = asCanonicalUrl(meta.social.image);
 	}
-	return html`
+	const ldjson = ldJsonify(meta.ldjsons || []);
+	const page = html`
 		<!doctype html>
 		<html lang="en">
 			<head>
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+				<meta name="robots" content="index, follow" />
 				<!-- Feeds -->
 				<link rel="alternate" type="application/rss+xml" href="/feed.rss" />
 				<link rel="alternate" type="application/atom+xml" href="./feed.atom" />
 				<link rel="alternate" type="application/feed+json" href="./feed.json" />
 				<!-- Page Details -->
-				<title>${escapeHtml(meta.canonical)}</title>
+				<title>${escapeHtml(meta.title)}</title>
 				<meta
 					property="og:title"
 					content="${escapeHtml(meta.social?.title || meta.title)}"
@@ -51,8 +56,9 @@ export function populateHtmlTemplate(meta: {
 							content="${escapeHtml(meta.social.image)}"
 						/>`
 					: ''}
-				<meta name="robots" content="index, follow" />
-				<link rel="canonical" href="${escapeHtml(meta.canonical)}" />
+				<meta property="og:url" content="${escapeHtml(canonical)}" />
+				<link rel="canonical" href="${escapeHtml(canonical)}" />
+				${ldjson}
 			</head>
 			<body>
 				<header>
@@ -63,4 +69,6 @@ export function populateHtmlTemplate(meta: {
 			</body>
 		</html>
 	`;
+	return page;
+	// return await formatHtml(page);
 }
