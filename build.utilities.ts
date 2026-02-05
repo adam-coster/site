@@ -1,11 +1,13 @@
 import fsp from 'node:fs/promises';
-
+type Category = '' | 'articles' | 'tools';
 interface ContentFile {
 	kind: 'content';
 	/** Path to the file */
 	path: string;
+	folder: string;
 	/** Full name of the file */
 	name: string;
+	category: Category;
 	/** The extension (without '.' prefix) */
 	type: string;
 	/** The name before any '.' characters */
@@ -19,13 +21,16 @@ interface StaticFile {
 	name: string;
 }
 
-export async function listContentFiles(
-	path: string,
-): Promise<(ContentFile | StaticFile)[]> {
-	if (path.endsWith('/')) path = path.slice(0, -1);
-	const files = await fsp.readdir(path);
-	return files.map(name => {
-		const filepath = `${path}/${name}`;
+export async function listContentFiles(): Promise<
+	(ContentFile | StaticFile)[]
+> {
+	const root = 'content';
+	const files = (
+		await fsp.readdir(root, { withFileTypes: true, recursive: true })
+	).filter(f => f.isFile());
+	return files.map(file => {
+		const name = file.name;
+		const filepath = `${root}/${name}`;
 		if (name.startsWith('$')) {
 			// Then it's a StaticFile
 			return {
@@ -39,8 +44,10 @@ export async function listContentFiles(
 		)!.groups!;
 		return {
 			kind: 'content',
-			path: `${path}/${name}`,
+			folder: file.parentPath,
+			path: file.parentPath + '/' + name,
 			name: name,
+			category: (file.parentPath.split('/')[1] || '') as Category,
 			type: type.slice(1),
 			slug,
 			id: id?.slice(1),

@@ -14,8 +14,7 @@ import { ok } from 'node:assert';
 import type { SiteContent } from './schemas/content.metadata.ts';
 
 const outDir = await ensureDir('dist', true);
-const sourceDir = 'content';
-const sourceFiles = await listContentFiles(sourceDir);
+const sourceFiles = await listContentFiles();
 const unusedSourceFiles = new Map(sourceFiles.map(f => [f.name, f]));
 const searchDocs: {
 	slug: string;
@@ -33,6 +32,9 @@ for (const file of sourceFiles) {
 		unusedSourceFiles.delete(file.name);
 		continue;
 	} else if (['jpg', 'png', 'gif', 'jpeg', 'js', 'json'].includes(file.type)) {
+		if (file.folder) {
+			await ensureDir(file.folder);
+		}
 		await copyFile(file.path, `${outDir}/${file.name}`);
 		unusedSourceFiles.delete(file.name);
 		continue;
