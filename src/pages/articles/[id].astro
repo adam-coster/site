@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from 'astro:content';
+import LayoutGlobal from '../../layouts/LayoutGlobal.astro';
+import { createArticleMicrodata } from '../../utilities/microdata.ts';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('articles');
+	return posts.map(post => ({
+		params: { id: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<LayoutGlobal
+	meta={{
+		canonical: post.data.canonical || `/article/${post.id}`,
+		description: post.data.description,
+		title: post.data.title,
+		ldjsons: [createArticleMicrodata(post.data)],
+	}}
+>
+	<h1>{post.data.title}</h1>
+	<Content />
+</LayoutGlobal>

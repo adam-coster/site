@@ -1,7 +1,0 @@
-/blog /
-/blog/:slug /articles/:slug
-/about /profile
-/tools /
-/feeds/blog.rss /feed.rss
-/feeds/blog.atom /feed.atom
-/feeds/blog.json /feed.json

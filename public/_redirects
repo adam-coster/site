@@ -1,0 +1,6 @@
+/blog /
+/blog/:slug /articles/:slug
+/about /
+/feeds/blog.rss /feed.atom
+/feeds/blog.atom /feed.atom
+/feeds/blog.json /feed.atom

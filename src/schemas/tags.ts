@@ -1,11 +1,8 @@
-import { z } from 'zod';
+import { z } from 'astro/zod';
 
-// Input either as a string or date, get a date
-export const looseDateSchema = z
-	.union([z.iso.date(), z.date()])
-	.transform(v => new Date(v));
+// TODO: Add this to the article schema once I'm ready to tune up the tags
 
-export const tag = z.literal([
+export const tag = z.enum([
 	'adhd',
 	'apple',
 	'authentication',

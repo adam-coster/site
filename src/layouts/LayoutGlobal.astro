@@ -1,0 +1,65 @@
+---
+import { version } from '../../package.json';
+import { ldJsonify } from '../utilities/microdata.ts';
+import { asCanonicalUrl } from '../utilities/urls.ts';
+
+interface Props {
+	meta: {
+		title: string;
+		description: string;
+		ldjsons?: any[];
+		social?: {
+			title?: string;
+			description?: string;
+			image?: string;
+		};
+		canonical: string;
+	};
+}
+const { meta } = Astro.props;
+
+const canonical = asCanonicalUrl(meta.canonical);
+const ldjson = meta.ldjsons && ldJsonify(meta.ldjsons);
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<meta name="robots" content="index, follow" />
+		<!-- Feeds -->
+		<link rel="alternate" type="application/rss+xml" href="/feed.rss" />
+		<!-- Page Details -->
+		<title>{meta.title}</title>
+		<meta name="description" content={meta.description} />
+		<meta property="og:title" content={meta.social?.title || meta.title} />
+		<meta
+			property="og:description"
+			content={meta.social?.description || meta.description}
+		/>
+		{
+			meta.social?.image && (
+				<meta property="og:image" content={meta.social.image} />
+			)
+		}
+		<meta property="og:url" content={canonical} />
+		<link rel="canonical" href={canonical} />
+		{ldjson && <script type="application/ld+json" set:html={ldjson} />}
+	</head>
+	<body>
+		<!-- TODO: NAVIGATION -->
+		<slot />
+		<footer>
+			<p>
+				<span class="inline-block"
+					>© <span id="copyright-year">{year}</span> Adam Coster.</span
+				>
+				<i class="inline-block">All rights reserved.</i>
+				<span class="inline-block version">v{version}</span>
+			</p>
+		</footer>
+	</body>
+</html>

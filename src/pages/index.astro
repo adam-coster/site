@@ -1,8 +1,7 @@
-import { readContentFile } from '../build.utilities.ts';
-import type { WebSiteSchema } from '../schemas/microdata.ts';
-import { populateHtmlTemplate, type PageMeta } from '../templates/page.ts';
+---
+import LayoutGlobal from '../layouts/LayoutGlobal.astro';
+import { me, profile, type WebSiteSchema } from '../utilities/microdata.ts';
 import { asCanonicalUrl } from '../utilities/urls.ts';
-import { me } from './profile.ts';
 
 /**
  * For showing on the landing page, enabling Google
@@ -21,18 +20,17 @@ const siteData: WebSiteSchema = {
 			'@type': 'EntryPoint',
 			urlTemplate: `${asCanonicalUrl('/')}?search={search_term_string}`,
 		},
-		// @ts-ignore (see https://developers.google.com/search/docs/advanced/structured-data/sitelinks-searchbox)
+		// @ts-expect-error (see https://developers.google.com/search/docs/advanced/structured-data/sitelinks-searchbox)
 		'query-input': 'required name=search_term_string',
 	},
 };
+---
 
-const meta: PageMeta = {
-	canonical: '/',
-	title: 'The Archives of Adam Coster',
-	description: 'Writings and miscellany',
-	content: await readContentFile('index.content.html'),
-	slug: '',
-	ldjsons: [siteData],
-};
-
-export const page = await populateHtmlTemplate(meta);
+<LayoutGlobal
+	meta={{
+		title: "Adam Coster's Digital Archive",
+		canonical: '/',
+		description: 'Articles, identifiers, tools, and more from Adam Coster.',
+		ldjsons: [profile, siteData],
+	}}
+/>
