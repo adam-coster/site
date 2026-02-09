@@ -1,36 +1,13 @@
 ---
-import LayoutGlobal from '../layouts/LayoutGlobal.astro';
-import { me, profile, type WebSiteSchema } from '../utilities/microdata.ts';
-import { asCanonicalUrl } from '../utilities/urls.ts';
-
-/**
- * For showing on the landing page, enabling Google
- * to populate a functional searchbox
- * @see https://developers.google.com/search/docs/advanced/structured-data/sitelinks-searchbox
- */
-const siteData: WebSiteSchema = {
-	'@type': 'WebSite',
-	name: 'Adam Coster',
-	alternateName: ['adamcoster.com', 'adam-coster'],
-	url: asCanonicalUrl('/'),
-	author: me,
-	potentialAction: {
-		'@type': 'SearchAction',
-		target: {
-			'@type': 'EntryPoint',
-			urlTemplate: `${asCanonicalUrl('/')}?search={search_term_string}`,
-		},
-		// @ts-expect-error (see https://developers.google.com/search/docs/advanced/structured-data/sitelinks-searchbox)
-		'query-input': 'required name=search_term_string',
-	},
-};
+import LayoutGlobal from "../layouts/LayoutGlobal.astro";
+import { siteData } from "../utilities/microdata.ts";
 ---
 
 <LayoutGlobal
-	meta={{
-		title: "Adam Coster's Digital Archive",
-		canonical: '/',
-		description: 'Articles, identifiers, tools, and more from Adam Coster.',
-		ldjsons: [profile, siteData],
-	}}
+  meta={{
+    title: "Adam Coster's Digital Archive",
+    canonical: "/",
+    description: "Articles, identifiers, tools, and more from Adam Coster.",
+    ldjsons: [siteData],
+  }}
 />
