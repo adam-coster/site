@@ -1,0 +1,11 @@
+{
+	"useTabs": true,
+	"endOfLine": "lf",
+	"experimentalTernaries": true,
+	"objectWrap": "collapse",
+	"quoteProps": "as-needed",
+	"semi": true,
+	"tabWidth": 2,
+	"trailingComma": "all",
+	"singleQuote": true
+}
