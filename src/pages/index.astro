@@ -1,13 +1,210 @@
 ---
-import LayoutGlobal from "../layouts/LayoutGlobal.astro";
-import { siteData } from "../utilities/microdata.ts";
+import { getCollection } from 'astro:content';
+import LayoutGlobal from '../layouts/LayoutGlobal.astro';
+import { siteData } from '../utilities/microdata.ts';
+
+interface PageItem {
+	url: string;
+	title: string;
+	description: string;
+	tags: string[];
+	editedAt: Date | undefined;
+	publishedAt: Date | undefined;
+}
+
+const articles = await getCollection('articles');
+// When the tools collection is ready, uncomment and add to items below:
+// const tools = await getCollection("tools");
+
+const items: PageItem[] = [
+	...articles.map((a) => ({
+		url: `/articles/${a.id}`,
+		title: a.data.title,
+		description: a.data.description,
+		tags: a.data.tags,
+		editedAt: a.data.editedAt,
+		publishedAt: a.data.publishedAt,
+	})),
+	// ...tools.map((t) => ({
+	//   url: `/tools/${t.id}`,
+	//   title: t.data.title,
+	//   description: t.data.description,
+	//   tags: t.data.tags,
+	//   publishedAt: t.data.publishedAt,
+	// })),
+];
+
+const sorted = items.sort((a, b) => {
+	const dateA = (a.editedAt || a.publishedAt)?.getTime() ?? 0;
+	const dateB = (b.editedAt || b.publishedAt)?.getTime() ?? 0;
+	return dateB - dateA;
+});
+
+function formatDate(date: Date | undefined): string {
+	if (!date) return '';
+	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
+}
 ---
 
 <LayoutGlobal
-  meta={{
-    title: "Adam Coster's Digital Archive",
-    canonical: "/",
-    description: "Articles, identifiers, tools, and more from Adam Coster.",
-    ldjsons: [siteData],
-  }}
-/>
+	meta={{
+		title: "Adam Coster's Digital Archive",
+		canonical: '/',
+		description: 'Articles, identifiers, tools, and more from Adam Coster.',
+		ldjsons: [siteData],
+	}}
+>
+	<main data-pagefind-ignore>
+		<header>
+			<h1>What are you looking for?</h1>
+			<p>
+				Every page on the site is listed below! Browse the list, or search for
+				something more specific.
+			</p>
+		</header>
+
+		<section class="search-bar">
+			<label for="search-input" class="sr-only">Search articles</label>
+			<input
+				type="search"
+				id="search-input"
+				placeholder="Search…"
+				autocomplete="off"
+				spellcheck="false"
+			/>
+		</section>
+
+		<ul id="article-list" role="list">
+			{
+				sorted.map((item) => (
+					<li
+						data-article
+						data-url={item.url}
+						data-search-text={[item.title, item.description, ...item.tags]
+							.join(' ')
+							.toLowerCase()}
+					>
+						<article>
+							<a href={item.url}>
+								<h2>{item.title}</h2>
+							</a>
+							<p class="description">{item.description}</p>
+							<footer>
+								{item.publishedAt && (
+									<time datetime={item.publishedAt.toISOString()}>
+										{formatDate(item.publishedAt)}
+									</time>
+								)}
+								{item.tags.length > 0 && (
+									<ul class="tags" role="list">
+										{item.tags.map((tag) => (
+											<li>{tag}</li>
+										))}
+									</ul>
+								)}
+							</footer>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+
+		<p id="no-results" hidden>No results found.</p>
+	</main>
+</LayoutGlobal>
+
+<script>
+	const searchInput = document.getElementById(
+		'search-input',
+	) as HTMLInputElement | null;
+	const articleItems = Array.from(
+		document.querySelectorAll<HTMLElement>('[data-article]'),
+	);
+	const noResults = document.getElementById('no-results');
+
+	// Pagefind is only available after a production build. During development
+	// or when no index exists yet, we fall back to plain text matching on the
+	// pre-rendered metadata stored in data-search-text.
+	let pagefind: any = null;
+	let pagefindLoadAttempted = false;
+
+	async function loadPagefind(): Promise<void> {
+		if (pagefindLoadAttempted) return;
+		pagefindLoadAttempted = true;
+		try {
+			// Assign to a variable so Vite cannot statically analyze the specifier
+			// (string literals in dynamic imports are resolved at transform time).
+			// The file only exists after `pnpm build`; in dev the import fails and
+			// we fall back to plain text matching.
+			const url = '/pagefind/pagefind.js';
+			pagefind = await import(/* @vite-ignore */ url);
+		} catch {
+			pagefind = null;
+		}
+	}
+
+	function normalizeUrl(url: string): string {
+		return url.replace(/\/$/, '');
+	}
+
+	async function handleSearch(query: string): Promise<void> {
+		query = query.trim();
+
+		if (!query) {
+			for (const item of articleItems) item.removeAttribute('hidden');
+			noResults?.setAttribute('hidden', '');
+			return;
+		}
+
+		await loadPagefind();
+
+		let matchingUrls: Set<string> | null = null;
+
+		if (pagefind) {
+			try {
+				const results = await pagefind.search(query);
+				const data: Array<{ url: string }> = await Promise.all(
+					results.results.map((r: any) => r.data()),
+				);
+				matchingUrls = new Set(data.map((d) => normalizeUrl(d.url)));
+			} catch {
+				// Fall through to text filter if pagefind search fails.
+			}
+		}
+
+		let visibleCount = 0;
+		for (const item of articleItems) {
+			const visible =
+				matchingUrls ?
+					matchingUrls.has(normalizeUrl(item.dataset.url ?? ''))
+				:	(item.dataset.searchText ?? '').includes(query.toLowerCase());
+
+			item.toggleAttribute('hidden', !visible);
+			if (visible) visibleCount++;
+		}
+
+		noResults?.toggleAttribute('hidden', visibleCount > 0);
+	}
+
+	searchInput?.addEventListener('input', (e) => {
+		handleSearch((e.target as HTMLInputElement).value);
+	});
+</script>
+
+<style>
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
+</style>
