@@ -8,11 +8,7 @@ interface Props {
 		title: string;
 		description: string;
 		ldjsons?: any[];
-		social?: {
-			title?: string;
-			description?: string;
-			image?: string;
-		};
+		social?: { title?: string; description?: string; image?: string };
 		canonical: string;
 	};
 }
@@ -21,9 +17,16 @@ const { meta } = Astro.props;
 const canonical = asCanonicalUrl(meta.canonical);
 const ldjson = meta.ldjsons && ldJsonify(meta.ldjsons);
 const year = new Date().getFullYear();
+
+const navLinks: { url: string; name: string }[] = [
+	{ name: 'About', url: '/about' },
+	{ name: 'Podcast', url: 'https://podcast.bscotch.net' },
+	{ name: 'Bluesky', url: 'https://bsky.app/profile/adamcoster.com' },
+	{ name: 'GitHub', url: 'https://github.com/adam-coster' },
+	{ name: 'RSS', url: '/feed.atom' },
+];
 ---
 
-<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -50,9 +53,28 @@ const year = new Date().getFullYear();
 		{ldjson && <script type="application/ld+json" set:html={ldjson} />}
 	</head>
 	<body>
-		<!-- TODO: NAVIGATION -->
+		<header data-pagefind-ignore>
+			<nav>
+				<menu>
+					<li>
+						<a id="home-link" href="/" title="Home" aria-label="Home">
+							<span class="first-name">adam</span><span class="last-name"
+								>coster</span
+							>
+						</a>
+					</li>
+					{
+						navLinks.map((link) => (
+							<li>
+								<a href={link.url}>{link.name}</a>
+							</li>
+						))
+					}
+				</menu>
+			</nav>
+		</header>
 		<slot />
-		<footer>
+		<footer data-pagefind-ignore>
 			<p>
 				<span class="inline-block"
 					>© <span id="copyright-year">{year}</span> Adam Coster.</span
