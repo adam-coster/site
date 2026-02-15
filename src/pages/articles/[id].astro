@@ -5,24 +5,65 @@ import { createArticleMicrodata } from '../../utilities/microdata.ts';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('articles');
-	return posts.map(post => ({
-		params: { id: post.id },
-		props: { post },
-	}));
+	return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
 }
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+function readableDate(date: Date): string {
+	return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
+		date,
+	);
+}
 ---
 
 <LayoutGlobal
 	meta={{
-		canonical: post.data.canonical || `/article/${post.id}`,
+		canonical: post.data.canonical || `/articles/${post.id}`,
 		description: post.data.description,
 		title: post.data.title,
 		ldjsons: [createArticleMicrodata(post.data)],
 	}}
 >
-	<h1>{post.data.title}</h1>
-	<Content />
+	<main>
+		<article data-pagefind-body>
+			<header>
+				<h1>{post.data.title}</h1>
+				<p hidden data-pagefind-meta="description">{post.data.description}</p>
+				<ul aria-label="Tags">
+					{
+						post.data.tags.map((tag) => (
+							<li data-pagefind-filter="tag">{tag}</li>
+						))
+					}
+				</ul>
+				{
+					post.data.editedAt && (
+						<p>
+							Updated
+							<time datetime={post.data.editedAt.toISOString()}>
+								{readableDate(post.data.editedAt)}
+							</time>
+						</p>
+					)
+				}
+				{
+					post.data.publishedAt && (
+						<p>
+							Published
+							<time
+								data-pagefind-meta="date[datetime]"
+								datetime={post.data.publishedAt.toISOString()}
+							>
+								{readableDate(post.data.publishedAt)}
+							</time>
+						</p>
+					)
+				}
+			</header>
+
+			<Content />
+		</article>
+	</main>
 </LayoutGlobal>
