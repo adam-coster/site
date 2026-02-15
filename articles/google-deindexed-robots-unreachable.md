@@ -1,6 +1,6 @@
 ---
 kind: article
-title: "robots.txt unreachable: Google search removed my site!"
+title: 'robots.txt unreachable: Google search removed my site!'
 description: I always thought that the absence of a robots.txt file implied a
   web crawler could do what it liked. Apparently not! Not with a 500 status
   code, anyway.
@@ -9,14 +9,13 @@ tags:
   - google
   - webdev
 crossPosts: []
-
 ---
 
 Every few months I remember that I have a blog, and then pop open the Google Search Console to make sure all my pages are indexed and see if people are finding the stuff I post.
 
 When I did this in December I was _quite_ startled to see that I was getting _literally zero_ traffic from Google Search.
 
-![Google Search Impressions chart for adamcoster.com spanning August 1, 2025 to December 2, 2025. Impressions are on an increasing trend for most of August, peaking at ~5000 daily impressions, but then impressions suddenly plummet to August 27, hitting 0 by mid-September.](/igoogle-deindexed-robots-unreachable.google-search-without-robots-txt.jpg)
+![Google Search Impressions chart for adamcoster.com spanning August 1, 2025 to December 2, 2025. Impressions are on an increasing trend for most of August, peaking at ~5000 daily impressions, but then impressions suddenly plummet to August 27, hitting 0 by mid-September.](/google-deindexed-robots-unreachable.google-search-without-robots-txt.jpg)
 
 Fortunately, [Google's Search Console](https://search.google.com/search-console/about) told me exactly what was going on: in its latest pass on my site, it put the whole thing into an error category of _not being indexable_ because it could not find a `/robots.txt` file ("robots.txt unreachable").
 
