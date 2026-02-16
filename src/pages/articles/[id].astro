@@ -27,16 +27,11 @@ function readableDate(date: Date): string {
 	}}
 >
 	<main>
-		<article data-pagefind-body>
+		<article>
 			<header>
 				<h1>{post.data.title}</h1>
-				<p hidden data-pagefind-meta="description">{post.data.description}</p>
 				<ul aria-label="Tags">
-					{
-						post.data.tags.map((tag) => (
-							<li data-pagefind-filter="tag">{tag}</li>
-						))
-					}
+					{post.data.tags.map((tag) => <li>{tag}</li>)}
 				</ul>
 				{
 					post.data.editedAt && (
@@ -52,10 +47,7 @@ function readableDate(date: Date): string {
 					post.data.publishedAt && (
 						<p>
 							Published
-							<time
-								data-pagefind-meta="date[datetime]"
-								datetime={post.data.publishedAt.toISOString()}
-							>
+							<time datetime={post.data.publishedAt.toISOString()}>
 								{readableDate(post.data.publishedAt)}
 							</time>
 						</p>

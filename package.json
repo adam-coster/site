@@ -5,15 +5,16 @@
 	"version": "0.49.3",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build && pagefind --site dist && rm -rf public/pagefind && cp -r dist/pagefind public/pagefind",
+		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
 	"dependencies": {
-		"astro": "^5.17.1"
+		"astro": "^5.17.1",
+		"lunr": "2.3.9"
 	},
 	"devDependencies": {
-		"pagefind": "^1",
+		"@types/lunr": "2.3.7",
 		"schema-dts": "1.1.5",
 		"yaml": "^2.8.2"
 	}

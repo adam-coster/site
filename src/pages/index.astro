@@ -58,7 +58,7 @@ function formatDate(date: Date | undefined): string {
 		ldjsons: [siteData],
 	}}
 >
-	<main data-pagefind-ignore>
+	<main>
 		<header>
 			<h1>What are you looking for?</h1>
 			<p>
@@ -118,6 +118,16 @@ function formatDate(date: Date | undefined): string {
 </LayoutGlobal>
 
 <script>
+	import lunr from 'lunr';
+
+	interface StoreEntry {
+		url: string;
+		title: string;
+		description: string;
+		tags: string[];
+		publishedAt: string | undefined;
+	}
+
 	const searchInput = document.getElementById(
 		'search-input',
 	) as HTMLInputElement | null;
@@ -126,29 +136,21 @@ function formatDate(date: Date | undefined): string {
 	);
 	const noResults = document.getElementById('no-results');
 
-	// Pagefind is only available after a production build. During development
-	// or when no index exists yet, we fall back to plain text matching on the
-	// pre-rendered metadata stored in data-search-text.
-	let pagefind: any = null;
-	let pagefindLoadAttempted = false;
+	let index: lunr.Index | null = null;
+	let store: Record<string, StoreEntry> = {};
+	let indexLoadAttempted = false;
 
-	async function loadPagefind(): Promise<void> {
-		if (pagefindLoadAttempted) return;
-		pagefindLoadAttempted = true;
+	async function loadIndex(): Promise<void> {
+		if (indexLoadAttempted) return;
+		indexLoadAttempted = true;
 		try {
-			// Assign to a variable so Vite cannot statically analyze the specifier
-			// (string literals in dynamic imports are resolved at transform time).
-			// The file only exists after `pnpm build`; in dev the import fails and
-			// we fall back to plain text matching.
-			const url = '/pagefind/pagefind.js';
-			pagefind = await import(/* @vite-ignore */ url);
+			const res = await fetch('/search-index.json');
+			const data = await res.json();
+			index = lunr.Index.load(data.index);
+			store = data.store;
 		} catch {
-			pagefind = null;
+			index = null;
 		}
-	}
-
-	function normalizeUrl(url: string): string {
-		return url.replace(/\/$/, '');
 	}
 
 	async function handleSearch(query: string): Promise<void> {
@@ -160,19 +162,16 @@ function formatDate(date: Date | undefined): string {
 			return;
 		}
 
-		await loadPagefind();
+		await loadIndex();
 
 		let matchingUrls: Set<string> | null = null;
 
-		if (pagefind) {
+		if (index) {
 			try {
-				const results = await pagefind.search(query);
-				const data: Array<{ url: string }> = await Promise.all(
-					results.results.map((r: any) => r.data()),
-				);
-				matchingUrls = new Set(data.map((d) => normalizeUrl(d.url)));
+				const results = index.search(query);
+				matchingUrls = new Set(results.map((r) => store[r.ref]?.url ?? ''));
 			} catch {
-				// Fall through to text filter if pagefind search fails.
+				// Fall through to text filter if lunr search fails (e.g. bad query syntax).
 			}
 		}
 
@@ -180,7 +179,7 @@ function formatDate(date: Date | undefined): string {
 		for (const item of articleItems) {
 			const visible =
 				matchingUrls ?
-					matchingUrls.has(normalizeUrl(item.dataset.url ?? ''))
+					matchingUrls.has(item.dataset.url ?? '')
 				:	(item.dataset.searchText ?? '').includes(query.toLowerCase());
 
 			item.toggleAttribute('hidden', !visible);
