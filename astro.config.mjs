@@ -65,5 +65,5 @@ function articleImages() {
 // https://astro.build/config
 export default defineConfig({
 	integrations: [articleImages()],
-	experimental: { contentIntellisense: true, headingIdCompat: true },
+	experimental: { contentIntellisense: true },
 });
