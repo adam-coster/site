@@ -12,8 +12,6 @@ interface StoreEntry {
 
 export const GET: APIRoute = async () => {
 	const articles = await getCollection('articles');
-	// When the tools collection is ready, uncomment and add below:
-	// const tools = await getCollection('tools');
 
 	const store: Record<string, StoreEntry> = {};
 
@@ -40,23 +38,6 @@ export const GET: APIRoute = async () => {
 				body: article.body ?? '',
 			});
 		}
-
-		// for (const tool of tools) {
-		// 	store[tool.id] = {
-		// 		url: `/tools/${tool.id}`,
-		// 		title: tool.data.title,
-		// 		description: tool.data.description,
-		// 		tags: tool.data.tags,
-		// 		publishedAt: tool.data.publishedAt?.toISOString(),
-		// 	};
-		// 	this.add({
-		// 		id: tool.id,
-		// 		title: tool.data.title,
-		// 		description: tool.data.description,
-		// 		tags: tool.data.tags.join(' '),
-		// 		body: tool.body ?? '',
-		// 	});
-		// }
 	});
 
 	return new Response(JSON.stringify({ index, store }), {

@@ -13,8 +13,6 @@ interface PageItem {
 }
 
 const articles = await getCollection('articles');
-// When the tools collection is ready, uncomment and add to items below:
-// const tools = await getCollection("tools");
 
 const items: PageItem[] = [
 	...articles.map((a) => ({
@@ -25,13 +23,6 @@ const items: PageItem[] = [
 		editedAt: a.data.editedAt,
 		publishedAt: a.data.publishedAt,
 	})),
-	// ...tools.map((t) => ({
-	//   url: `/tools/${t.id}`,
-	//   title: t.data.title,
-	//   description: t.data.description,
-	//   tags: t.data.tags,
-	//   publishedAt: t.data.publishedAt,
-	// })),
 ];
 
 const sorted = items.sort((a, b) => {
@@ -81,13 +72,7 @@ function formatDate(date: Date | undefined): string {
 		<ul id="article-list" role="list">
 			{
 				sorted.map((item) => (
-					<li
-						data-article
-						data-url={item.url}
-						data-search-text={[item.title, item.description, ...item.tags]
-							.join(' ')
-							.toLowerCase()}
-					>
+					<li data-article data-url={item.url}>
 						<article>
 							<a href={item.url}>
 								<h2>{item.title}</h2>
@@ -119,6 +104,7 @@ function formatDate(date: Date | undefined): string {
 
 <script>
 	import lunr from 'lunr';
+	import { version } from '../../package.json';
 
 	interface StoreEntry {
 		url: string;
@@ -144,7 +130,8 @@ function formatDate(date: Date | undefined): string {
 		if (indexLoadAttempted) return;
 		indexLoadAttempted = true;
 		try {
-			const res = await fetch('/search-index.json');
+			// TODO: Append a site-version query param as a cache-buster, and have the search-index.json be immutable
+			const res = await fetch(`/search-index.json?${version}`);
 			const data = await res.json();
 			index = lunr.Index.load(data.index);
 			store = data.store;

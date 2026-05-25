@@ -1,6 +1,10 @@
 ---
 title: One Paragraph
 sortKey: c
+tags:
+  - profile
+  - bio
+  - biography
 ---
 
 After receiving a PhD in Molecular Biology, Adam switched careers to co-found video game studio
