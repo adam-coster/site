@@ -1,44 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
+import { digitalIdentities } from '../identifiers.ts';
 import LayoutGlobal from '../layouts/LayoutGlobal.astro';
-import { siteData } from '../utilities/microdata.ts';
+import { profile, siteData } from '../utilities/microdata.ts';
+import { asCanonicalUrl } from '../utilities/urls.ts';
 
-interface PageItem {
-	url: string;
-	title: string;
-	description: string;
-	tags: string[];
-	editedAt: Date | undefined;
-	publishedAt: Date | undefined;
-}
-
-const articles = await getCollection('articles');
-
-const items: PageItem[] = [
-	...articles.map((a) => ({
-		url: `/articles/${a.id}`,
-		title: a.data.title,
-		description: a.data.description,
-		tags: a.data.tags,
-		editedAt: a.data.editedAt,
-		publishedAt: a.data.publishedAt,
-	})),
-];
-
-const sorted = items.sort((a, b) => {
-	const dateA = (a.editedAt || a.publishedAt)?.getTime() ?? 0;
-	const dateB = (b.editedAt || b.publishedAt)?.getTime() ?? 0;
-	return dateB - dateA;
-});
-
-function formatDate(date: Date | undefined): string {
-	if (!date) return '';
-	return date.toLocaleDateString('en-US', {
-		year: 'numeric',
-		month: 'short',
-		day: 'numeric',
-	});
-}
+const linkedIn = digitalIdentities.find(
+	(d) => d.type === 'social' && d.name.toLowerCase() === 'linkedin',
+)!;
+const bluesky = digitalIdentities.find(
+	(d) => d.type === 'social' && d.name.toLowerCase() === 'bluesky',
+)!;
 ---
 
 <LayoutGlobal
@@ -46,151 +17,73 @@ function formatDate(date: Date | undefined): string {
 		title: "Adam Coster's Digital Archive",
 		canonical: '/',
 		description: 'Articles, identifiers, tools, and more from Adam Coster.',
-		ldjsons: [siteData],
+		ldjsons: [siteData, profile],
+		social: { image: asCanonicalUrl('/profile.portrait.1372.jpg') },
 	}}
 >
-	<main>
+	<h1>About Me</h1>
+
+	<p>
+		I'm the CTO at <a href="https://www.bscotch.net">Butterscotch Shenanigans</a
+		> (a.k.a. "Bscotch"). I co-founded Bscotch with my two brothers back in 2012,
+		went full-time in 2014 after getting my Ph.D. (in Cellular & Molecular Biology,
+		of all things), and that's been my main thing ever since.
+	</p>
+	<p>
+		At Bscotch I've had a lot of responsibilities over the years. We're a very
+		small team and have done everything we could to stay independent, which
+		mostly means we've all had to wear a lot of hats. My brothers can I share
+		responsibility for the business side of things, and then fall into
+		specialized technical domains. Mine has been what I like to call
+		"Productivity Engineering": designing and building software to make everyone
+		else's work more enjoyable, reliable, and efficient. In practice that's
+		largely meant full-stack web development.
+	</p>
+	<p>
+		Check out <a href="/articles">my writings</a> and <a href="/portfolio"
+			>my portfolio</a
+		> to learn more.
+	</p>
+
+	<section>
 		<header>
-			<h1>What are you looking for?</h1>
-			<p>
-				Every page on the site is listed below! Browse the list, or search for
-				something more specific.
-			</p>
+			<h2 id="identities">Finding me on the Internet</h2>
 		</header>
-
-		<section class="search-bar">
-			<label for="search-input" class="sr-only">Search articles</label>
-			<input
-				type="search"
-				id="search-input"
-				placeholder="Search…"
-				autocomplete="off"
-				spellcheck="false"
-			/>
-		</section>
-
-		<ul id="article-list" role="list">
+		<p>
+			The web is a hellscape of fraud, scams, and impersonation. I've assembled
+			most of my digital identifiers and properties below: you can find my
+			official accounts/profiles/identifiers in these places. And if someone is
+			claiming to be somewhere, you should be able to verify that against the
+			things listed below.
+		</p>
+		<p>
+			(Of course someone having one of these identifiers isn't <i>proof</i>
+			that it's me. You know, hackers and whatnot. But it's a infinitely more likely
+			than something not listed here!)
+		</p>
+		<p>
+			Note that I don't regularly use most of these: if you're looking to
+			connect your best bet is
+			<a href={bluesky.url}>Bluesky</a> or <a href={linkedIn.url}>LinkedIn</a> (infrequently
+			checked).
+		</p>
+		<p>
+			If you're looking to contact me about <a href="https://www.bscotch.net"
+				>Bscotch</a
+			> or <a href="https://ludokit.com">LudoKit</a> stuff, use the contact systems
+			on those sites.
+		</p>
+		<ul>
 			{
-				sorted.map((item) => (
-					<li data-article data-url={item.url}>
-						<article>
-							<a href={item.url}>
-								<h2>{item.title}</h2>
-							</a>
-							<p class="description">{item.description}</p>
-							<footer>
-								{item.publishedAt && (
-									<time datetime={item.publishedAt.toISOString()}>
-										{formatDate(item.publishedAt)}
-									</time>
-								)}
-								{item.tags.length > 0 && (
-									<ul class="tags" role="list">
-										{item.tags.map((tag) => (
-											<li>{tag}</li>
-										))}
-									</ul>
-								)}
-							</footer>
-						</article>
+				digitalIdentities.map((identity) => (
+					<li>
+						<a href={identity.url}>
+							{identity.name}
+							{'handle' in identity && `(as ${identity.handle})`}
+						</a>
 					</li>
 				))
 			}
 		</ul>
-
-		<p id="no-results" hidden>No results found.</p>
-	</main>
+	</section>
 </LayoutGlobal>
-
-<script>
-	import lunr from 'lunr';
-	import { version } from '../../package.json';
-
-	interface StoreEntry {
-		url: string;
-		title: string;
-		description: string;
-		tags: string[];
-		publishedAt: string | undefined;
-	}
-
-	const searchInput = document.getElementById(
-		'search-input',
-	) as HTMLInputElement | null;
-	const articleItems = Array.from(
-		document.querySelectorAll<HTMLElement>('[data-article]'),
-	);
-	const noResults = document.getElementById('no-results');
-
-	let index: lunr.Index | null = null;
-	let store: Record<string, StoreEntry> = {};
-	let indexLoadAttempted = false;
-
-	async function loadIndex(): Promise<void> {
-		if (indexLoadAttempted) return;
-		indexLoadAttempted = true;
-		try {
-			// TODO: Append a site-version query param as a cache-buster, and have the search-index.json be immutable
-			const res = await fetch(`/search-index.json?${version}`);
-			const data = await res.json();
-			index = lunr.Index.load(data.index);
-			store = data.store;
-		} catch {
-			index = null;
-		}
-	}
-
-	async function handleSearch(query: string): Promise<void> {
-		query = query.trim();
-
-		if (!query) {
-			for (const item of articleItems) item.removeAttribute('hidden');
-			noResults?.setAttribute('hidden', '');
-			return;
-		}
-
-		await loadIndex();
-
-		let matchingUrls: Set<string> | null = null;
-
-		if (index) {
-			try {
-				const results = index.search(query);
-				matchingUrls = new Set(results.map((r) => store[r.ref]?.url ?? ''));
-			} catch {
-				// Fall through to text filter if lunr search fails (e.g. bad query syntax).
-			}
-		}
-
-		let visibleCount = 0;
-		for (const item of articleItems) {
-			const visible =
-				matchingUrls ?
-					matchingUrls.has(item.dataset.url ?? '')
-				:	(item.dataset.searchText ?? '').includes(query.toLowerCase());
-
-			item.toggleAttribute('hidden', !visible);
-			if (visible) visibleCount++;
-		}
-
-		noResults?.toggleAttribute('hidden', visibleCount > 0);
-	}
-
-	searchInput?.addEventListener('input', (e) => {
-		handleSearch((e.target as HTMLInputElement).value);
-	});
-</script>
-
-<style>
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border-width: 0;
-	}
-</style>

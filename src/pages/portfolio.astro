@@ -1,0 +1,102 @@
+---
+import YearRange from '../components/YearRange.astro';
+import LayoutGlobal from '../layouts/LayoutGlobal.astro';
+import { profile } from '../utilities/microdata.ts';
+import { asCanonicalUrl } from '../utilities/urls.ts';
+---
+
+<LayoutGlobal
+	meta={{
+		title: "Adam Coster's Portfolio",
+		description:
+			"The things that Adam Coster has built and done over the years. Perhaps you'd call it a portfolio. Or a curriculum vitae. Maybe a résumé?",
+		canonical: '/',
+		ldjsons: [profile],
+		social: { image: asCanonicalUrl('/profile.portrait.1372.jpg') },
+	}}
+>
+	<h1>My Portfolio</h1>
+
+	<p>
+		I don't have an extensive <abbr title="curriculum vitae">CV</abbr> since, hey,
+		I'm (co-)running my own show so I'm not on the job market. But there are all kinds
+		of reasons someone might want to see my resumé/portfolio, so here ya go!
+	</p>
+
+	<h2>A brief timeline</h2>
+
+	<ul>
+		<li>
+			<YearRange from="2014" />: Co-Founder and, variably, CTO or CEO at
+			<a href="https://www.bscotch.net">Butterscotch Shenanigans</a> (a.k.a. "Bscotch").
+			See the next section for details.
+		</li>
+		<li>
+			<YearRange from="2010" to="2014" />: Ph.D. in Cellular & Molecular Biology
+			at University of Texas Southwestern ("UT Southwestern"). My research lived
+			at the intersection of wet-lab biology and computational biology. In the
+			unlikely scenario you want to know more about that, check out <a
+				href="https://github.com/adam-coster/dissertation">my dissertation</a
+			> (it has the incredibly approachable title: "Quantitative single-cell imaging
+			reveals insulation of morphogenic signal transduction").
+		</li>
+		<li>
+			<YearRange from={2007} to={2010} />: Various lab technician and teaching
+			assistant roles at UChicago and Washington University ("WashU").
+		</li>
+		<li>
+			<YearRange from={2004} to={2007} />: B.A. in Biology from the University
+			of Chicago ("UChicago").
+		</li>
+	</ul>
+
+	<h2>My work at Bscotch</h2>
+
+	<p>
+		My brothers and I co-run the studio and make all high-level business and
+		management decisions together. So I collaborate with them on all of that
+		big-picture "BizDev" stuff: reviewing/negotiating contracts, analyzing data,
+		interpreting market signals, managing our team, project planning and
+		management, wrangling 3rd parties, and on and on. Whatever needs doing to
+		keep the machine running.
+	</p>
+
+	<p>
+		But that's the background stuff and not really what I consider my primary
+		work in the studio. while my brothers have always focused on the game design
+		and development side of things, I've mostly been in the background doing
+		what I call "Productivity Engineering": figuring out how to make the work of
+		game development and publishing more efficient, more fun, and more reliable.
+		That's mostly been via the web platform.
+	</p>
+
+	<p>
+		So I've done many things, and we've been fortunate to still be kicking after
+		over a decade in this <i>extremely</i> tumultuous industry. Most of that needs
+		way too much context to make interesting, so the following is just the short list
+		of what (I think) are the most interesting projects I've worked on at Bscotch.
+	</p>
+
+	<ul>
+		<li><time></time>&rarr;<time></time></li>
+		<li><time></time>&rarr;<time></time></li>
+		<li><time></time>&rarr;<time></time></li>
+		<li><time></time>&rarr;<time></time></li>
+		<li>
+			<b>Crashlands Creator</b>
+			(<YearRange from="2015" to="2016" />): An internal, web-based editor for
+			creating the map and story content for Crashlands. We also considered
+			opening this up to players someday to allow them to create their own
+			stories in Crashlands, but ultimately (and thankfully, in retrospect)
+			decided against it.
+		</li>
+		<li>
+			<b>BscotchID</b> (<YearRange from="2014" to="2017" />): The first version
+			of my cross-platform user account service (later replaced with "Rumpus").
+			It included cross-platform save syncing, cross-platform achievements (with
+			cross-game content unlocks), a bespoke newsletter service, and some other
+			neat stuff. Despite being my first foray into web development, BscotchID
+			worked quite well and wasn't fully taken offline until 2026.
+		</li>
+	</ul>
+</LayoutGlobal>

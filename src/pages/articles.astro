@@ -1,0 +1,193 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutGlobal from '../layouts/LayoutGlobal.astro';
+import { siteData } from '../utilities/microdata.ts';
+
+interface PageItem {
+	url: string;
+	title: string;
+	description: string;
+	tags: string[];
+	editedAt: Date | undefined;
+	publishedAt: Date | undefined;
+}
+
+const articles = await getCollection('articles');
+
+const items: PageItem[] = [
+	...articles.map((a) => ({
+		url: `/articles/${a.id}`,
+		title: a.data.title,
+		description: a.data.description,
+		tags: a.data.tags,
+		editedAt: a.data.editedAt,
+		publishedAt: a.data.publishedAt,
+	})),
+];
+
+const sorted = items.sort((a, b) => {
+	const dateA = (a.editedAt || a.publishedAt)?.getTime() ?? 0;
+	const dateB = (b.editedAt || b.publishedAt)?.getTime() ?? 0;
+	return dateB - dateA;
+});
+
+function formatDate(date: Date | undefined): string {
+	if (!date) return '';
+	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
+}
+---
+
+<LayoutGlobal
+	meta={{
+		title: 'The Writings of Adam Coster',
+		canonical: '/',
+		description: 'Articles about programming, life, business, and more.',
+		ldjsons: [siteData],
+	}}
+>
+	<main>
+		<header>
+			<h1>Articles by Adam Coster</h1>
+			<p>Articles about programming, life, business, and more.</p>
+		</header>
+
+		<section class="search-bar">
+			<label for="search-input" class="sr-only">Search articles</label>
+			<input
+				type="search"
+				id="search-input"
+				placeholder="Search…"
+				autocomplete="off"
+				spellcheck="false"
+			/>
+		</section>
+
+		<ul id="article-list" role="list">
+			{
+				sorted.map((item) => (
+					<li data-article data-url={item.url}>
+						<article>
+							<a href={item.url}>
+								<h2>{item.title}</h2>
+							</a>
+							<p class="description">{item.description}</p>
+							<footer>
+								{item.publishedAt && (
+									<time datetime={item.publishedAt.toISOString()}>
+										{formatDate(item.publishedAt)}
+									</time>
+								)}
+								{item.tags.length > 0 && (
+									<ul class="tags" role="list">
+										{item.tags.map((tag) => (
+											<li>{tag}</li>
+										))}
+									</ul>
+								)}
+							</footer>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+
+		<p id="no-results" hidden>No results found.</p>
+	</main>
+</LayoutGlobal>
+
+<script>
+	import lunr from 'lunr';
+	import { version } from '../../package.json';
+
+	interface StoreEntry {
+		url: string;
+		title: string;
+		description: string;
+		tags: string[];
+		publishedAt: string | undefined;
+	}
+
+	const searchInput = document.getElementById(
+		'search-input',
+	) as HTMLInputElement | null;
+	const articleItems = Array.from(
+		document.querySelectorAll<HTMLElement>('[data-article]'),
+	);
+	const noResults = document.getElementById('no-results');
+
+	let index: lunr.Index | null = null;
+	let store: Record<string, StoreEntry> = {};
+	let indexLoadAttempted = false;
+
+	async function loadIndex(): Promise<void> {
+		if (indexLoadAttempted) return;
+		indexLoadAttempted = true;
+		try {
+			// TODO: Append a site-version query param as a cache-buster, and have the search-index.json be immutable
+			const res = await fetch(`/search-index.json?${version}`);
+			const data = await res.json();
+			index = lunr.Index.load(data.index);
+			store = data.store;
+		} catch {
+			index = null;
+		}
+	}
+
+	async function handleSearch(query: string): Promise<void> {
+		query = query.trim();
+
+		if (!query) {
+			for (const item of articleItems) item.removeAttribute('hidden');
+			noResults?.setAttribute('hidden', '');
+			return;
+		}
+
+		await loadIndex();
+
+		let matchingUrls: Set<string> | null = null;
+
+		if (index) {
+			try {
+				const results = index.search(query);
+				matchingUrls = new Set(results.map((r) => store[r.ref]?.url ?? ''));
+			} catch {
+				// Fall through to text filter if lunr search fails (e.g. bad query syntax).
+			}
+		}
+
+		let visibleCount = 0;
+		for (const item of articleItems) {
+			const visible =
+				matchingUrls ?
+					matchingUrls.has(item.dataset.url ?? '')
+				:	(item.dataset.searchText ?? '').includes(query.toLowerCase());
+
+			item.toggleAttribute('hidden', !visible);
+			if (visible) visibleCount++;
+		}
+
+		noResults?.toggleAttribute('hidden', visibleCount > 0);
+	}
+
+	searchInput?.addEventListener('input', (e) => {
+		handleSearch((e.target as HTMLInputElement).value);
+	});
+</script>
+
+<style>
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
+</style>

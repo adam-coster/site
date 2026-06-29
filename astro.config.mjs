@@ -36,7 +36,7 @@ function articleImages() {
 		hooks: {
 			'astro:server:setup': ({ server }) => {
 				server.middlewares.use((req, res, next) => {
-					const urlPath = req.url?.split('?')[0] ?? '';
+					const urlPath = req.originalUrl?.split('?')[0] ?? '';
 					const filename = basename(urlPath);
 					// Only handle flat root-level image paths like /image.jpg —
 					// not sub-paths like /articles/image.jpg.

@@ -1,0 +1,18 @@
+---
+interface Props {
+	from: number | string;
+	to?: number | string;
+}
+const { from, to } = Astro.props;
+---
+
+<span class="year-range">
+	<time class="from">{from}</time> &rarr;
+	{
+		to ?
+			<time class="to">{to}</time>
+		:	<time class="to today" datetime={`${new Date().getFullYear()}`}>
+				today
+			</time>
+	}
+</span>

@@ -10,11 +10,12 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"astro": "^6.3.7",
+		"astro": "^7.0.3",
 		"lunr": "2.3.9"
 	},
 	"devDependencies": {
 		"@types/lunr": "2.3.7",
+		"@types/node": "^26.0.1",
 		"schema-dts": "1.1.5",
 		"yaml": "^2.8.2"
 	}
