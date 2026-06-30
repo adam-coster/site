@@ -1,4 +1,5 @@
 ---
+import PortfolioEntry from '../components/PortfolioEntry.astro';
 import YearRange from '../components/YearRange.astro';
 import LayoutGlobal from '../layouts/LayoutGlobal.astro';
 import { profile } from '../utilities/microdata.ts';
@@ -78,25 +79,67 @@ import { asCanonicalUrl } from '../utilities/urls.ts';
 	</p>
 
 	<ul>
-		<li><time></time>&rarr;<time></time></li>
-		<li><time></time>&rarr;<time></time></li>
-		<li><time></time>&rarr;<time></time></li>
-		<li><time></time>&rarr;<time></time></li>
 		<li>
-			<b>Crashlands Creator</b>
-			(<YearRange from="2015" to="2016" />): An internal, web-based editor for
-			creating the map and story content for Crashlands. We also considered
-			opening this up to players someday to allow them to create their own
-			stories in Crashlands, but ultimately (and thankfully, in retrospect)
-			decided against it.
-		</li>
-		<li>
-			<b>BscotchID</b> (<YearRange from="2014" to="2017" />): The first version
-			of my cross-platform user account service (later replaced with "Rumpus").
-			It included cross-platform save syncing, cross-platform achievements (with
-			cross-game content unlocks), a bespoke newsletter service, and some other
-			neat stuff. Despite being my first foray into web development, BscotchID
-			worked quite well and wasn't fully taken offline until 2026.
+			<PortfolioEntry title="Rumpus" from="2017" to="2020">
+				<p>
+					BscotchID quickly became difficult to expand and maintain, since I had
+					no idea what I was doing when I first built it and it got quite messy.
+					So I took a bunch of time to learn the basics of the popular web
+					frameworks and web infrastructure strategies of the day (oh how
+					quickly they change) and set off to do it "right".
+				</p>
+				<p>
+					And so I built "Rumpus", which eventually subsumed BscotchID and
+					became the web backbone of the studio. It includes a collection of
+					data storage models built for game-specific needs (made general enough
+					that the needs of any of our games would be covered) all in service of
+					store- and platform-agnostic player data syncing, integrations with
+					authentication and licensing for every store and platform we sell
+					games on, an automated system for publishing release notes, and lots
+					of features for internal use in game development.
+				</p>
+				<p>
+					Rumpus is used in all of our games, stores well over a million user
+					accounts, and handles millions of web requests per month.
+				</p>
+			</PortfolioEntry>
+			<li>
+				<PortfolioEntry title="Crashlands Creator" from="2015" to="2016">
+					<p>
+						An internal, web-based editor for creating the map and story content
+						for Crashlands. We also considered opening this up to players
+						someday to allow them to create their own stories in Crashlands, but
+						ultimately (and thankfully, in retrospect) decided against it.
+					</p>
+				</PortfolioEntry>
+				<li>
+					<PortfolioEntry title="InkPipe v0" from="2015" to="2016">
+						<p>
+							We were making our games in GameMaker, with art assets made in
+							Inkscape. The manual process of exporting images from Inkscape and
+							then into GameMaker was tedious and error-prone, and we also
+							needed some light image processing to remove aliasing artifacts
+							when sprites were drawn in subpixel positions or at weird scales.
+							So I slapped together an internal pipeline to handle all of that,
+							so that the artist could make the art and the game programmer
+							could have it automatically updated in-game without any manual
+							steps.
+						</p>
+					</PortfolioEntry>
+				</li>
+				<li>
+					<PortfolioEntry title="BscotchID" from="2014" to="2017">
+						<p>
+							The first version of my cross-platform user account service (later
+							replaced with "Rumpus"). It included cross-platform save syncing,
+							cross-platform achievements (with cross-game content unlocks), a
+							bespoke newsletter service, and some other neat stuff. Despite
+							being my first foray into web development, BscotchID worked quite
+							well and wasn't fully taken offline until 2026.
+						</p>
+					</PortfolioEntry>
+				</li>
+			</li>
 		</li>
 	</ul>
 </LayoutGlobal>
